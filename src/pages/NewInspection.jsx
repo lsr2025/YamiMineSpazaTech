@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { 
@@ -25,141 +25,104 @@ import {
   Camera,
   Loader2,
   AlertTriangle,
-  Package
+  Package,
+  Wifi,
+  WifiOff,
+  Info,
+  Lightbulb
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { GuidedChecklistItem, SectionHeader, StepNavigation } from '../components/mobile/GuidedChecklist';
+import { PhotoCapture } from '../components/mobile/PhotoCapture';
+import { SyncStatusIndicator } from '../components/mobile/OfflineSyncManager';
 
-const ChecklistItem = ({ 
-  label, 
-  description, 
-  value, 
-  onChange, 
-  photoValue, 
-  onPhotoChange,
-  criticalIfFail 
-}) => {
-  const [uploading, setUploading] = useState(false);
-
-  const handlePhotoUpload = async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    
-    setUploading(true);
-    try {
-      const { file_url } = await base44.integrations.Core.UploadFile({ file });
-      onPhotoChange(file_url);
-    } catch (error) {
-      console.error('Upload failed:', error);
+// Checklist items configuration with guidance
+const checklistConfig = {
+  structural: [
+    {
+      id: 'structural_walls_floors',
+      label: 'Walls & Floors Smooth and Washable',
+      description: 'Surfaces must be easy to clean and maintain',
+      guidance: 'Look for cracks, holes, peeling paint, or porous surfaces. Floors should be smooth concrete, tiles, or sealed surfaces. Walls should be painted or tiled with no exposed brick.',
+      photoField: 'structural_walls_floors_photo',
+      required: true,
+      critical: false
+    },
+    {
+      id: 'structural_ventilation',
+      label: 'Adequate Ventilation',
+      description: 'Natural or mechanical ventilation present',
+      guidance: 'Check for windows that open, vents, extractor fans, or air conditioning. Stale or smoky air indicates poor ventilation.',
+      required: true,
+      critical: false
+    },
+    {
+      id: 'structural_pest_control',
+      label: 'Pest Control Measures',
+      description: 'No evidence of rodents, insects, or infestation',
+      guidance: 'Look for droppings, gnaw marks, dead insects, nests, or holes. Check behind shelves, under fridges, and in storage areas. Evidence of any pests is an automatic critical fail.',
+      photoField: 'structural_pest_control_photo',
+      required: true,
+      critical: true
     }
-    setUploading(false);
-  };
-
-  return (
-    <div className={`p-4 rounded-xl border transition-all ${
-      value === 'pass' ? 'bg-emerald-500/10 border-emerald-500/30' :
-      value === 'fail' ? 'bg-red-500/10 border-red-500/30' :
-      value === 'na' ? 'bg-slate-500/10 border-slate-500/30' :
-      'bg-slate-800/50 border-slate-700/50'
-    }`}>
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex-1">
-          <div className="flex items-center gap-2">
-            <p className="text-white font-medium">{label}</p>
-            {criticalIfFail && value === 'fail' && (
-              <span className="px-2 py-0.5 bg-red-500 text-white text-xs rounded-full">CRITICAL</span>
-            )}
-          </div>
-          {description && (
-            <p className="text-slate-400 text-sm mt-1">{description}</p>
-          )}
-        </div>
-      </div>
-
-      {/* Pass/Fail/NA Buttons */}
-      <div className="flex gap-2 mt-4">
-        <Button
-          type="button"
-          variant={value === 'pass' ? 'default' : 'outline'}
-          onClick={() => onChange('pass')}
-          className={`flex-1 h-14 gap-2 ${
-            value === 'pass' 
-              ? 'bg-emerald-600 hover:bg-emerald-700 text-white border-0' 
-              : 'border-slate-600 text-slate-300 hover:bg-slate-700'
-          }`}
-        >
-          <CheckCircle2 className="w-5 h-5" />
-          Pass
-        </Button>
-        <Button
-          type="button"
-          variant={value === 'fail' ? 'default' : 'outline'}
-          onClick={() => onChange('fail')}
-          className={`flex-1 h-14 gap-2 ${
-            value === 'fail' 
-              ? 'bg-red-600 hover:bg-red-700 text-white border-0' 
-              : 'border-slate-600 text-slate-300 hover:bg-slate-700'
-          }`}
-        >
-          <XCircle className="w-5 h-5" />
-          Fail
-        </Button>
-        <Button
-          type="button"
-          variant={value === 'na' ? 'default' : 'outline'}
-          onClick={() => onChange('na')}
-          className={`flex-1 h-14 gap-2 ${
-            value === 'na' 
-              ? 'bg-slate-600 hover:bg-slate-700 text-white border-0' 
-              : 'border-slate-600 text-slate-300 hover:bg-slate-700'
-          }`}
-        >
-          <MinusCircle className="w-5 h-5" />
-          N/A
-        </Button>
-      </div>
-
-      {/* Photo Upload for Failed Items */}
-      {value === 'fail' && onPhotoChange && (
-        <div className="mt-4">
-          <Label className="text-white text-sm">Evidence Photo (Required for Failed Items)</Label>
-          <div className="mt-2">
-            {photoValue ? (
-              <div className="relative h-32 rounded-lg overflow-hidden">
-                <img src={photoValue} alt="Evidence" className="w-full h-full object-cover" />
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="destructive"
-                  className="absolute top-2 right-2"
-                  onClick={() => onPhotoChange('')}
-                >
-                  Remove
-                </Button>
-              </div>
-            ) : (
-              <label className="flex items-center justify-center h-20 rounded-lg border-2 border-dashed border-red-500/50 bg-red-500/10 cursor-pointer">
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handlePhotoUpload}
-                  className="hidden"
-                  disabled={uploading}
-                />
-                {uploading ? (
-                  <Loader2 className="w-6 h-6 text-red-400 animate-spin" />
-                ) : (
-                  <div className="flex items-center gap-2 text-red-400">
-                    <Camera className="w-5 h-5" />
-                    <span className="text-sm">Capture Evidence</span>
-                  </div>
-                )}
-              </label>
-            )}
-          </div>
-        </div>
-      )}
-    </div>
-  );
+  ],
+  hygiene: [
+    {
+      id: 'hygiene_handwashing',
+      label: 'Hand Washing Station Present',
+      description: 'Basin with running water available',
+      guidance: 'Must have a dedicated handwashing basin (not used for food prep). Check that water actually flows. Basin should be easily accessible to food handlers.',
+      photoField: 'hygiene_handwashing_photo',
+      required: true,
+      critical: true
+    },
+    {
+      id: 'hygiene_soap_towels',
+      label: 'Soap and Towels Available',
+      description: 'Handwashing supplies present and accessible',
+      guidance: 'Check for liquid soap dispenser or bar soap near basin. Paper towels or clean cloth towels should be available. Hand sanitizer alone is not sufficient.',
+      required: true,
+      critical: false
+    },
+    {
+      id: 'hygiene_protective_clothing',
+      label: 'Protective Clothing (PPE)',
+      description: 'Food handler wearing clean apron/hairnet',
+      guidance: 'Person handling food should wear clean apron and hair covering. Check cleanliness of the PPE - stained or dirty items fail. Gloves are bonus but not required.',
+      photoField: 'hygiene_protective_clothing_photo',
+      required: true,
+      critical: false
+    }
+  ],
+  coldchain: [
+    {
+      id: 'coldchain_separation',
+      label: 'Raw/Cooked Food Separation',
+      description: 'Raw meat stored separately from ready-to-eat food',
+      guidance: 'Raw meat, poultry, and fish must be stored below or separate from cooked/ready-to-eat foods. Check fridge organization - raw items at bottom, cooked at top.',
+      photoField: 'coldchain_separation_photo',
+      required: true,
+      critical: true
+    }
+  ],
+  inventory: [
+    {
+      id: 'waste_disposal',
+      label: 'Waste Disposal Bins Present',
+      description: 'Proper waste management facilities',
+      guidance: 'Check for bins with lids, especially in food prep areas. Bins should not be overflowing. Look for separate bins for recyclables if applicable.',
+      required: true,
+      critical: false
+    },
+    {
+      id: 'chemical_storage',
+      label: 'Chemical Storage Separate from Food',
+      description: 'Cleaning agents/paraffin stored away from food items',
+      guidance: 'All cleaning chemicals, paraffin, pesticides must be stored in a separate area from food. Check under counters and storage areas.',
+      required: true,
+      critical: false
+    }
+  ]
 };
 
 const ScoreMeter = ({ score }) => {
@@ -228,6 +191,20 @@ export default function NewInspection() {
   
   const [currentSection, setCurrentSection] = useState(0);
   const [gpsLoading, setGpsLoading] = useState(false);
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [validationErrors, setValidationErrors] = useState([]);
+
+  // Track online status
+  useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
 
   const { data: shop } = useQuery({
     queryKey: ['shop', shopId],
@@ -437,6 +414,14 @@ export default function NewInspection() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4 md:p-6">
+      {/* Offline Banner */}
+      {!isOnline && (
+        <div className="px-4 py-2 bg-amber-600 text-white text-center text-sm font-medium flex items-center justify-center gap-2">
+          <WifiOff className="w-4 h-4" />
+          Offline Mode - Data will sync when connected
+        </div>
+      )}
+
       {/* Header */}
       <div className="mb-6">
         <div className="flex items-center gap-3 mb-4">
@@ -447,7 +432,12 @@ export default function NewInspection() {
           </Link>
           <div className="flex-1">
             <h1 className="text-2xl font-bold text-white">Health Inspection</h1>
-            <p className="text-slate-400 text-sm">{shop?.shop_name}</p>
+            <div className="flex items-center gap-2 mt-1">
+              <p className="text-slate-400 text-sm">{shop?.shop_name}</p>
+              <Badge className={`text-xs ${isOnline ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-400'}`}>
+                {isOnline ? <><Wifi className="w-3 h-3 mr-1" />Online</> : <><WifiOff className="w-3 h-3 mr-1" />Offline</>}
+              </Badge>
+            </div>
           </div>
         </div>
         <Progress value={progress} className="h-2 bg-slate-700" />
@@ -499,67 +489,97 @@ export default function NewInspection() {
                   {/* Structural Section */}
                   {currentSection === 0 && (
                     <>
-                      <ChecklistItem
-                        label="Walls & Floors Smooth and Washable"
-                        description="Surfaces must be easy to clean and maintain"
-                        value={formData.structural_walls_floors}
-                        onChange={(v) => updateField('structural_walls_floors', v)}
-                        photoValue={formData.structural_walls_floors_photo}
-                        onPhotoChange={(v) => updateField('structural_walls_floors_photo', v)}
+                      <SectionHeader
+                        icon={Building}
+                        title="Structural Hygiene"
+                        description="Check walls, floors, ventilation, and pest control"
+                        color="text-cyan-400"
+                        completedCount={getSectionStats('structural').completed}
+                        totalCount={getSectionStats('structural').total}
+                        errors={validateSection('structural')}
                       />
-                      <ChecklistItem
-                        label="Adequate Ventilation"
-                        description="Natural or mechanical ventilation present"
-                        value={formData.structural_ventilation}
-                        onChange={(v) => updateField('structural_ventilation', v)}
-                      />
-                      <ChecklistItem
-                        label="Pest Control Measures"
-                        description="No evidence of rodents, insects, or infestation"
-                        value={formData.structural_pest_control}
-                        onChange={(v) => updateField('structural_pest_control', v)}
-                        photoValue={formData.structural_pest_control_photo}
-                        onPhotoChange={(v) => updateField('structural_pest_control_photo', v)}
-                        criticalIfFail
-                      />
+                      {checklistConfig.structural.map(item => (
+                        <GuidedChecklistItem
+                          key={item.id}
+                          id={item.id}
+                          label={item.label}
+                          description={item.description}
+                          guidance={item.guidance}
+                          value={formData[item.id]}
+                          onChange={(v) => updateField(item.id, v)}
+                          photoValue={item.photoField ? formData[item.photoField] : null}
+                          onPhotoChange={item.photoField ? (v) => updateField(item.photoField, v) : null}
+                          required={item.required}
+                          critical={item.critical}
+                          photoRequiredOnFail={!!item.photoField}
+                        />
+                      ))}
                     </>
                   )}
 
                   {/* Hygiene Section */}
                   {currentSection === 1 && (
                     <>
-                      <ChecklistItem
-                        label="Hand Washing Station Present"
-                        description="Basin with running water available"
-                        value={formData.hygiene_handwashing}
-                        onChange={(v) => updateField('hygiene_handwashing', v)}
-                        photoValue={formData.hygiene_handwashing_photo}
-                        onPhotoChange={(v) => updateField('hygiene_handwashing_photo', v)}
-                        criticalIfFail
+                      <SectionHeader
+                        icon={Droplets}
+                        title="Food Handling & Hygiene"
+                        description="Handwashing, soap availability, and protective clothing"
+                        color="text-emerald-400"
+                        completedCount={getSectionStats('hygiene').completed}
+                        totalCount={getSectionStats('hygiene').total}
+                        errors={validateSection('hygiene')}
                       />
-                      <ChecklistItem
-                        label="Soap and Towels Available"
-                        description="Handwashing supplies present and accessible"
-                        value={formData.hygiene_soap_towels}
-                        onChange={(v) => updateField('hygiene_soap_towels', v)}
-                      />
-                      <ChecklistItem
-                        label="Protective Clothing (PPE)"
-                        description="Food handler wearing clean apron/hairnet"
-                        value={formData.hygiene_protective_clothing}
-                        onChange={(v) => updateField('hygiene_protective_clothing', v)}
-                        photoValue={formData.hygiene_protective_clothing_photo}
-                        onPhotoChange={(v) => updateField('hygiene_protective_clothing_photo', v)}
-                      />
+                      {checklistConfig.hygiene.map(item => (
+                        <GuidedChecklistItem
+                          key={item.id}
+                          id={item.id}
+                          label={item.label}
+                          description={item.description}
+                          guidance={item.guidance}
+                          value={formData[item.id]}
+                          onChange={(v) => updateField(item.id, v)}
+                          photoValue={item.photoField ? formData[item.photoField] : null}
+                          onPhotoChange={item.photoField ? (v) => updateField(item.photoField, v) : null}
+                          required={item.required}
+                          critical={item.critical}
+                          photoRequiredOnFail={!!item.photoField}
+                        />
+                      ))}
                     </>
                   )}
 
                   {/* Cold Chain Section */}
                   {currentSection === 2 && (
                     <>
-                      <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700/50">
-                        <Label className="text-white font-medium">Fridge Temperature Reading (°C)</Label>
-                        <p className="text-slate-400 text-sm mb-3">Use thermometer to check internal temperature</p>
+                      <SectionHeader
+                        icon={Thermometer}
+                        title="Cold Chain Management"
+                        description="Temperature control and food separation"
+                        color="text-blue-400"
+                        completedCount={getSectionStats('coldchain').completed + (formData.coldchain_fridge_temp ? 1 : 0)}
+                        totalCount={getSectionStats('coldchain').total + 1}
+                        errors={validateSection('coldchain')}
+                      />
+                      
+                      {/* Temperature Input with Guidance */}
+                      <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700/50 mb-4">
+                        <div className="flex items-center justify-between mb-2">
+                          <Label className="text-white font-medium">Fridge Temperature Reading (°C)</Label>
+                          <Badge className="bg-amber-500/20 text-amber-400 text-xs">Required</Badge>
+                        </div>
+                        <p className="text-slate-400 text-sm mb-2">Use thermometer to check internal temperature</p>
+                        
+                        {/* Guidance Tip */}
+                        <div className="p-3 bg-cyan-500/10 border border-cyan-500/30 rounded-lg mb-4">
+                          <div className="flex items-start gap-2">
+                            <Lightbulb className="w-4 h-4 text-cyan-400 mt-0.5 flex-shrink-0" />
+                            <p className="text-slate-300 text-sm">
+                              Safe temperature for refrigerated foods is <strong className="text-cyan-400">0°C to 5°C</strong>. 
+                              Place thermometer in center of fridge, wait 2 minutes, then read.
+                            </p>
+                          </div>
+                        </div>
+                        
                         <Input
                           type="number"
                           step="0.1"
@@ -567,47 +587,109 @@ export default function NewInspection() {
                           onChange={(e) => updateField('coldchain_fridge_temp', e.target.value)}
                           placeholder="e.g. 4.5"
                           className={`bg-slate-700 border-slate-600 text-white h-14 text-2xl text-center font-mono ${
-                            parseFloat(formData.coldchain_fridge_temp) > 5 ? 'border-red-500 text-red-400' : ''
+                            parseFloat(formData.coldchain_fridge_temp) > 5 ? 'border-red-500 text-red-400' : 
+                            formData.coldchain_fridge_temp && parseFloat(formData.coldchain_fridge_temp) <= 5 ? 'border-emerald-500 text-emerald-400' : ''
                           }`}
                         />
-                        {parseFloat(formData.coldchain_fridge_temp) > 5 && (
-                          <div className="mt-3 p-3 bg-red-500/20 border border-red-500/30 rounded-lg flex items-center gap-2">
-                            <AlertTriangle className="w-5 h-5 text-red-400" />
-                            <span className="text-red-400 font-medium">CRITICAL: Temperature exceeds 5°C safe limit!</span>
-                          </div>
+                        
+                        {/* Status Feedback */}
+                        {formData.coldchain_fridge_temp && (
+                          parseFloat(formData.coldchain_fridge_temp) > 5 ? (
+                            <motion.div
+                              initial={{ opacity: 0, y: -10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              className="mt-3 p-3 bg-red-500/20 border border-red-500/30 rounded-lg flex items-center gap-2"
+                            >
+                              <AlertTriangle className="w-5 h-5 text-red-400" />
+                              <div>
+                                <span className="text-red-400 font-semibold">CRITICAL FAILURE</span>
+                                <p className="text-red-300 text-sm">Temperature exceeds 5°C safe limit. Perishable food at risk.</p>
+                              </div>
+                            </motion.div>
+                          ) : (
+                            <motion.div
+                              initial={{ opacity: 0, y: -10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              className="mt-3 p-3 bg-emerald-500/20 border border-emerald-500/30 rounded-lg flex items-center gap-2"
+                            >
+                              <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                              <span className="text-emerald-400 font-medium">Temperature within safe range</span>
+                            </motion.div>
+                          )
                         )}
+                        
+                        {/* Photo of thermometer */}
+                        <div className="mt-4">
+                          <PhotoCapture
+                            label="Thermometer Photo"
+                            description="Capture photo showing the thermometer reading"
+                            value={formData.coldchain_fridge_temp_photo}
+                            onChange={(v) => updateField('coldchain_fridge_temp_photo', v)}
+                          />
+                        </div>
                       </div>
 
-                      <ChecklistItem
-                        label="Raw/Cooked Food Separation"
-                        description="Raw meat stored separately from ready-to-eat food"
-                        value={formData.coldchain_separation}
-                        onChange={(v) => updateField('coldchain_separation', v)}
-                        photoValue={formData.coldchain_separation_photo}
-                        onPhotoChange={(v) => updateField('coldchain_separation_photo', v)}
-                        criticalIfFail
-                      />
+                      {checklistConfig.coldchain.map(item => (
+                        <GuidedChecklistItem
+                          key={item.id}
+                          id={item.id}
+                          label={item.label}
+                          description={item.description}
+                          guidance={item.guidance}
+                          value={formData[item.id]}
+                          onChange={(v) => updateField(item.id, v)}
+                          photoValue={item.photoField ? formData[item.photoField] : null}
+                          onPhotoChange={item.photoField ? (v) => updateField(item.photoField, v) : null}
+                          required={item.required}
+                          critical={item.critical}
+                          photoRequiredOnFail={!!item.photoField}
+                        />
+                      ))}
                     </>
                   )}
 
                   {/* Inventory Section */}
                   {currentSection === 3 && (
                     <>
-                      <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700/50">
-                        <Label className="text-white font-medium">Expired Items Found (Sample of 5)</Label>
-                        <p className="text-slate-400 text-sm mb-3">Check 5 random items for expiry dates</p>
+                      <SectionHeader
+                        icon={Package}
+                        title="Inventory & Waste Management"
+                        description="Check for expired items, waste disposal, and chemical storage"
+                        color="text-amber-400"
+                        completedCount={getSectionStats('inventory').completed + (formData.water_supply ? 1 : 0) + 1}
+                        totalCount={getSectionStats('inventory').total + 2}
+                        errors={validateSection('inventory')}
+                      />
+                      
+                      {/* Expired Items Counter with Guidance */}
+                      <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700/50 mb-4">
+                        <div className="flex items-center justify-between mb-2">
+                          <Label className="text-white font-medium">Expired Items Found</Label>
+                          <Badge className="bg-slate-700 text-slate-300 text-xs">Sample of 5 items</Badge>
+                        </div>
+                        
+                        {/* Guidance */}
+                        <div className="p-3 bg-cyan-500/10 border border-cyan-500/30 rounded-lg mb-4">
+                          <div className="flex items-start gap-2">
+                            <Lightbulb className="w-4 h-4 text-cyan-400 mt-0.5 flex-shrink-0" />
+                            <p className="text-slate-300 text-sm">
+                              Randomly select 5 products from shelves. Check expiry dates. Count how many are expired or have no date visible.
+                            </p>
+                          </div>
+                        </div>
+                        
                         <div className="flex items-center gap-4">
                           <Button
                             type="button"
                             variant="outline"
                             size="icon"
                             onClick={() => updateField('inventory_expired_count', Math.max(0, formData.inventory_expired_count - 1))}
-                            className="h-14 w-14 border-slate-600 text-white"
+                            className="h-14 w-14 border-slate-600 text-white text-2xl"
                           >
-                            -
+                            −
                           </Button>
                           <div className={`flex-1 h-14 flex items-center justify-center text-3xl font-bold rounded-lg ${
-                            formData.inventory_expired_count > 0 ? 'bg-red-500/20 text-red-400' : 'bg-slate-700 text-white'
+                            formData.inventory_expired_count > 0 ? 'bg-red-500/20 text-red-400' : 'bg-emerald-500/20 text-emerald-400'
                           }`}>
                             {formData.inventory_expired_count}
                           </div>
@@ -616,38 +698,76 @@ export default function NewInspection() {
                             variant="outline"
                             size="icon"
                             onClick={() => updateField('inventory_expired_count', Math.min(5, formData.inventory_expired_count + 1))}
-                            className="h-14 w-14 border-slate-600 text-white"
+                            className="h-14 w-14 border-slate-600 text-white text-2xl"
                           >
                             +
                           </Button>
                         </div>
+                        
+                        {formData.inventory_expired_count > 0 && (
+                          <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            className="mt-3"
+                          >
+                            <PhotoCapture
+                              label="Photo of Expired Items"
+                              description="Capture evidence showing expired products"
+                              value={formData.inventory_expired_photo}
+                              onChange={(v) => updateField('inventory_expired_photo', v)}
+                              required
+                            />
+                          </motion.div>
+                        )}
                       </div>
 
-                      <ChecklistItem
-                        label="Waste Disposal Bins Present"
-                        description="Proper waste management facilities"
-                        value={formData.waste_disposal}
-                        onChange={(v) => updateField('waste_disposal', v)}
-                      />
+                      {checklistConfig.inventory.map(item => (
+                        <GuidedChecklistItem
+                          key={item.id}
+                          id={item.id}
+                          label={item.label}
+                          description={item.description}
+                          guidance={item.guidance}
+                          value={formData[item.id]}
+                          onChange={(v) => updateField(item.id, v)}
+                          photoValue={item.photoField ? formData[item.photoField] : null}
+                          onPhotoChange={item.photoField ? (v) => updateField(item.photoField, v) : null}
+                          required={item.required}
+                          critical={item.critical}
+                          photoRequiredOnFail={!!item.photoField}
+                        />
+                      ))}
 
-                      <ChecklistItem
-                        label="Chemical Storage Separate from Food"
-                        description="Cleaning agents/paraffin stored away from food items"
-                        value={formData.chemical_storage}
-                        onChange={(v) => updateField('chemical_storage', v)}
-                      />
-
+                      {/* Water Supply */}
                       <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700/50">
-                        <Label className="text-white font-medium">Water Supply</Label>
+                        <div className="flex items-center justify-between mb-2">
+                          <Label className="text-white font-medium">Water Supply Type</Label>
+                          <Badge className="bg-amber-500/20 text-amber-400 text-xs">Required</Badge>
+                        </div>
                         <RadioGroup
                           value={formData.water_supply}
                           onValueChange={(v) => updateField('water_supply', v)}
-                          className="mt-3 flex gap-4"
+                          className="mt-3 grid grid-cols-3 gap-2"
                         >
-                          {['tap', 'tank', 'none'].map(option => (
-                            <div key={option} className="flex items-center gap-2">
-                              <RadioGroupItem value={option} id={option} className="border-slate-500" />
-                              <Label htmlFor={option} className="text-slate-300 capitalize">{option}</Label>
+                          {[
+                            { value: 'tap', label: 'Municipal Tap', desc: 'Piped water' },
+                            { value: 'tank', label: 'Tank/JoJo', desc: 'Stored water' },
+                            { value: 'none', label: 'None', desc: 'No water' }
+                          ].map(option => (
+                            <div key={option.value}>
+                              <RadioGroupItem value={option.value} id={option.value} className="hidden peer" />
+                              <Label 
+                                htmlFor={option.value} 
+                                className={`block p-3 rounded-lg border cursor-pointer transition-all text-center
+                                  ${formData.water_supply === option.value 
+                                    ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-400' 
+                                    : 'bg-slate-700/50 border-slate-600 text-slate-300 hover:bg-slate-700'
+                                  }
+                                `}
+                              >
+                                <p className="font-medium">{option.label}</p>
+                                <p className="text-xs opacity-70">{option.desc}</p>
+                              </Label>
                             </div>
                           ))}
                         </RadioGroup>
@@ -658,42 +778,24 @@ export default function NewInspection() {
               </AnimatePresence>
 
               {/* Navigation */}
-              <div className="flex justify-between mt-8 pt-6 border-t border-slate-700">
-                <Button
-                  variant="outline"
-                  onClick={() => setCurrentSection(prev => prev - 1)}
-                  disabled={currentSection === 0}
-                  className="border-slate-600 text-white hover:bg-slate-700 gap-2"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                  Previous
-                </Button>
-
-                {currentSection < sections.length - 1 ? (
-                  <Button
-                    onClick={() => setCurrentSection(prev => prev + 1)}
-                    className="bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white gap-2"
-                  >
-                    Next Section
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={handleSubmit}
-                    disabled={createInspection.isPending}
-                    className="bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white gap-2 min-w-40"
-                  >
-                    {createInspection.isPending ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : (
-                      <>
-                        <CheckCircle2 className="w-4 h-4" />
-                        Complete Inspection
-                      </>
-                    )}
-                  </Button>
-                )}
-              </div>
+              <StepNavigation
+                currentStep={currentSection}
+                totalSteps={sections.length}
+                onPrevious={() => setCurrentSection(prev => prev - 1)}
+                onNext={() => {
+                  const errors = validateSection(sections[currentSection].id);
+                  if (errors.length > 0) {
+                    setValidationErrors(errors);
+                  } else {
+                    setValidationErrors([]);
+                    setCurrentSection(prev => prev + 1);
+                  }
+                }}
+                onComplete={handleSubmit}
+                canProceed={true}
+                validationErrors={validationErrors}
+                isSubmitting={createInspection.isPending}
+              />
             </CardContent>
           </Card>
         </div>
