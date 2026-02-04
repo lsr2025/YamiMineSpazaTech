@@ -348,6 +348,19 @@ export default function ShopDetail() {
                 <InfoRow icon={FileText} label="ID Number" value={shop.owner_id_number ? '••••••' + shop.owner_id_number.slice(-4) : null} />
                 <InfoRow icon={MapPin} label="Nationality" value={shop.owner_nationality?.replace('_', ' ')} />
                 <InfoRow icon={Phone} label="Phone" value={shop.phone_number} highlight />
+                <InfoRow icon={User} label="Gender" value={shop.owner_gender} />
+                <InfoRow icon={User} label="Age Group" value={shop.owner_age_group} />
+                <InfoRow icon={User} label="PDG Status" value={shop.owner_pdg_status?.replace('_', ' ')} />
+                <InfoRow icon={User} label="Education" value={shop.owner_education_level?.replace('_', ' ')} />
+                <div className="py-3 border-b border-slate-700/50">
+                  <p className="text-slate-400 text-sm mb-2">Special Categories</p>
+                  <div className="flex flex-wrap gap-2">
+                    {shop.owner_youth_status && <Badge className="bg-purple-500/20 text-purple-400">Youth-Owned</Badge>}
+                    {shop.owner_woman_owned && <Badge className="bg-pink-500/20 text-pink-400">Woman-Owned</Badge>}
+                    {shop.owner_disability_status && <Badge className="bg-blue-500/20 text-blue-400">Disability</Badge>}
+                    {!shop.owner_youth_status && !shop.owner_woman_owned && !shop.owner_disability_status && <span className="text-slate-500">None</span>}
+                  </div>
+                </div>
               </CardContent>
             </Card>
 
@@ -369,6 +382,97 @@ export default function ShopDetail() {
                 />
                 {shop.gps_accuracy && (
                   <InfoRow icon={MapPin} label="GPS Accuracy" value={`±${shop.gps_accuracy}m`} />
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Land & Tenure */}
+            <Card className="bg-gradient-to-br from-slate-900 to-slate-800 border-slate-700/50">
+              <CardHeader className="border-b border-slate-700/50">
+                <CardTitle className="text-white flex items-center gap-2">
+                  <Building className="w-5 h-5 text-emerald-400" />
+                  Land & Tenure Security
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-4">
+                <InfoRow icon={Building} label="Ownership Type" value={shop.land_ownership_type?.replace(/_/g, ' ')} />
+                <InfoRow icon={FileText} label="Tenure Security" value={shop.tenure_security_status?.replace(/_/g, ' ')} />
+                {shop.monthly_rent && <InfoRow icon={DollarSign} label="Monthly Rent" value={`R${shop.monthly_rent}`} />}
+                <div className="py-3">
+                  <p className="text-slate-400 text-sm mb-2">Documentation</p>
+                  <div className="flex flex-wrap gap-2">
+                    {shop.tenure_documentation?.length > 0 ? shop.tenure_documentation.map(d => (
+                      <Badge key={d} className="bg-emerald-500/20 text-emerald-400 capitalize">
+                        {d.replace(/_/g, ' ')}
+                      </Badge>
+                    )) : <span className="text-slate-500">None specified</span>}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Employee Demographics */}
+            <Card className="bg-gradient-to-br from-slate-900 to-slate-800 border-slate-700/50">
+              <CardHeader className="border-b border-slate-700/50">
+                <CardTitle className="text-white flex items-center gap-2">
+                  <User className="w-5 h-5 text-purple-400" />
+                  Employee Demographics
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-4">
+                <div className="grid grid-cols-3 gap-4 mb-4">
+                  <div className="text-center p-3 bg-slate-800/50 rounded-lg">
+                    <div className="text-2xl font-bold text-white">{shop.num_employees || 0}</div>
+                    <p className="text-slate-400 text-xs">Total</p>
+                  </div>
+                  <div className="text-center p-3 bg-slate-800/50 rounded-lg">
+                    <div className="text-2xl font-bold text-cyan-400">{shop.num_employees_fulltime || 0}</div>
+                    <p className="text-slate-400 text-xs">Full-time</p>
+                  </div>
+                  <div className="text-center p-3 bg-slate-800/50 rounded-lg">
+                    <div className="text-2xl font-bold text-amber-400">{shop.num_employees_parttime || 0}</div>
+                    <p className="text-slate-400 text-xs">Part-time</p>
+                  </div>
+                </div>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Male / Female</span>
+                    <span className="text-white">{shop.num_employees_male || 0} / {shop.num_employees_female || 0}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Youth (18-35)</span>
+                    <span className="text-white">{shop.num_employees_youth || 0}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">With Disabilities</span>
+                    <span className="text-white">{shop.num_employees_disabled || 0}</span>
+                  </div>
+                </div>
+                {shop.employees_pdg_breakdown && (
+                  <div className="mt-4 pt-4 border-t border-slate-700/50">
+                    <p className="text-slate-400 text-sm mb-2">PDG Breakdown</p>
+                    <div className="grid grid-cols-2 gap-2 text-sm">
+                      {Object.entries(shop.employees_pdg_breakdown).map(([key, value]) => (
+                        <div key={key} className="flex justify-between">
+                          <span className="text-slate-500 capitalize">{key.replace(/_/g, ' ')}</span>
+                          <span className="text-white">{value || 0}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {shop.employees_education_breakdown && (
+                  <div className="mt-4 pt-4 border-t border-slate-700/50">
+                    <p className="text-slate-400 text-sm mb-2">Education Breakdown</p>
+                    <div className="grid grid-cols-2 gap-2 text-sm">
+                      {Object.entries(shop.employees_education_breakdown).map(([key, value]) => (
+                        <div key={key} className="flex justify-between">
+                          <span className="text-slate-500 capitalize">{key.replace(/_/g, ' ')}</span>
+                          <span className="text-white">{value || 0}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 )}
               </CardContent>
             </Card>
