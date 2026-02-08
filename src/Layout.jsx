@@ -5,6 +5,7 @@ import { base44 } from '@/api/base44Client';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import TermsAndConditionsModal from './components/TermsAndConditionsModal';
 import { 
   LayoutDashboard, 
   Store, 
@@ -38,6 +39,9 @@ export default function Layout({ children, currentPageName }) {
   const handleLogout = async () => {
     await base44.auth.logout();
   };
+
+  // Check if user needs to agree to T&Cs
+  const showTermsModal = user && !user.terms_agreed;
 
   // Hide layout on certain pages
   const fullScreenPages = ['MapView'];
@@ -189,6 +193,9 @@ export default function Layout({ children, currentPageName }) {
       <main className="lg:ml-72 pt-16 lg:pt-0 min-h-screen bg-gray-50">
         {children}
       </main>
+
+      {/* Terms & Conditions Modal */}
+      {showTermsModal && <TermsAndConditionsModal user={user} open={true} />}
     </div>
   );
 }
