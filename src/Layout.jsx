@@ -120,15 +120,15 @@ export default function Layout({ children, currentPageName }) {
               <Link
                 key={item.page}
                 to={createPageUrl(item.page)}
-                onClick={() => setSidebarOpen(false)}>
-
+                onClick={() => setSidebarOpen(false)}
+              >
                 <div className={`
                   flex items-center gap-3 px-4 py-3 rounded-xl transition-all
-                  ${isActive ?
-                'bg-gradient-to-r from-red-600/20 to-transparent text-white border-l-4 border-red-500' :
-                'text-slate-400 hover:bg-slate-800/50 hover:text-white'}
-                `
-                }>
+                  ${isActive 
+                    ? 'bg-gradient-to-r from-red-600/20 to-transparent text-white border-l-4 border-red-500' 
+                    : 'text-slate-400 hover:bg-slate-800/50 hover:text-white'
+                  }
+                `}>
                   <Icon className={`w-5 h-5 ${isActive ? 'text-red-400' : ''}`} />
                   <span className="font-medium">{item.name}</span>
                   {isActive && <ChevronRight className="w-4 h-4 ml-auto" />}

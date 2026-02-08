@@ -238,17 +238,17 @@ export default function Dashboard() {
   const complianceRate = totalShops > 0 ? (compliantShops / totalShops * 100).toFixed(0) : 0;
 
   return (
-    <div className="bg-slate-300 p-4 min-h-screen from-slate-950 via-slate-900 to-slate-950 md:p-6">
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4 md:p-6">
       {/* Header */}
       <div className="mb-8">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-
+          className="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+        >
           <div>
-            <h1 className="text-slate-800 text-3xl font-bold tracking-tight md:text-4xl">Command Centre
-
+            <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight">
+              Command Centre
             </h1>
             <p className="text-slate-400 mt-1">
               Spaza Compliance & Funding Readiness Dashboard
