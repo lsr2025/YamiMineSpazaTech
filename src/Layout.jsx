@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { createPageUrl } from '@/utils';
 import { base44 } from '@/api/base44Client';
@@ -21,16 +22,18 @@ import {
 } from 'lucide-react';
 
 const navItems = [
-  { name: 'Dashboard', icon: LayoutDashboard, page: 'Dashboard' },
-  { name: 'Shops', icon: Store, page: 'Shops' },
-  { name: 'Map View', icon: MapPin, page: 'MapView' },
-  { name: 'Analytics', icon: BarChart3, page: 'Analytics' }
+  { name: 'Dashboard', icon: LayoutDashboard, page: 'Dashboard', roles: ['field_agent', 'coordinator', 'ceo', 'coo', 'cfo', 'dev_team'] },
+  { name: 'Shops', icon: Store, page: 'Shops', roles: ['field_agent', 'coordinator', 'ceo', 'coo', 'cfo', 'dev_team'] },
+  { name: 'Field Notes', icon: ClipboardCheck, page: 'CoordinatorDiary', roles: ['coordinator', 'ceo', 'coo', 'cfo', 'dev_team'] },
+  { name: 'Map View', icon: MapPin, page: 'MapView', roles: ['coordinator', 'ceo', 'coo', 'cfo', 'dev_team'] },
+  { name: 'Analytics', icon: BarChart3, page: 'Analytics', roles: ['coordinator', 'ceo', 'coo', 'cfo', 'dev_team'] }
 ];
 
 export default function Layout({ children, currentPageName }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const navigate = useNavigate();
   
-  const { data: user } = useQuery({
+  const { data: user, isLoading: userLoading } = useQuery({
     queryKey: ['currentUser'],
     queryFn: () => base44.auth.me(),
     retry: false
@@ -44,10 +47,17 @@ export default function Layout({ children, currentPageName }) {
   const showTermsModal = user && !user.terms_agreed;
 
   // Hide layout on certain pages
-  const fullScreenPages = ['MapView'];
+  const fullScreenPages = ['MapView', 'Welcome'];
   if (fullScreenPages.includes(currentPageName)) {
     return children;
   }
+
+  // Redirect to welcome if no role is set
+  useEffect(() => {
+    if (user && !user.user_role && currentPageName !== 'Welcome') {
+      navigate(createPageUrl('Welcome'));
+    }
+  }, [user, currentPageName, navigate]);
 
   return (
     <div className="min-h-screen bg-white">
@@ -118,6 +128,11 @@ export default function Layout({ children, currentPageName }) {
         {/* Navigation */}
         <nav className="p-4 space-y-2">
           {navItems.map((item) => {
+            // Filter navigation by user role
+            if (!item.roles.includes(user?.user_role) && user?.role !== 'admin') {
+              return null;
+            }
+            
             const isActive = currentPageName === item.page;
             const Icon = item.icon;
             return (
