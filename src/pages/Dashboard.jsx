@@ -6,10 +6,10 @@ import { createPageUrl } from '@/utils';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { 
-  Store, 
-  ClipboardCheck, 
-  AlertTriangle, 
+import {
+  Store,
+  ClipboardCheck,
+  AlertTriangle,
   TrendingUp,
   MapPin,
   Plus,
@@ -17,16 +17,16 @@ import {
   Shield,
   DollarSign,
   ArrowRight,
-  Activity
-} from 'lucide-react';
+  Activity } from
+'lucide-react';
 import { motion } from 'framer-motion';
 
-const StatCard = ({ title, value, subtitle, icon: Icon, color, trend }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.3 }}
-  >
+const StatCard = ({ title, value, subtitle, icon: Icon, color, trend }) =>
+<motion.div
+  initial={{ opacity: 0, y: 20 }}
+  animate={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.3 }}>
+
     <Card className="relative overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 border-slate-700/50 shadow-xl">
       <div className={`absolute top-0 right-0 w-32 h-32 transform translate-x-8 -translate-y-8 rounded-full opacity-10 ${color}`} />
       <CardContent className="p-6">
@@ -34,15 +34,15 @@ const StatCard = ({ title, value, subtitle, icon: Icon, color, trend }) => (
           <div>
             <p className="text-sm font-medium text-slate-400 uppercase tracking-wider">{title}</p>
             <p className="text-4xl font-bold text-white mt-2">{value}</p>
-            {subtitle && (
-              <p className="text-sm text-slate-400 mt-1">{subtitle}</p>
-            )}
-            {trend && (
-              <div className="flex items-center gap-1 mt-2">
+            {subtitle &&
+          <p className="text-sm text-slate-400 mt-1">{subtitle}</p>
+          }
+            {trend &&
+          <div className="flex items-center gap-1 mt-2">
                 <TrendingUp className="w-4 h-4 text-emerald-400" />
                 <span className="text-emerald-400 text-sm font-medium">{trend}</span>
               </div>
-            )}
+          }
           </div>
           <div className={`p-4 rounded-2xl ${color} bg-opacity-20`}>
             <Icon className="w-8 h-8 text-white" />
@@ -50,33 +50,33 @@ const StatCard = ({ title, value, subtitle, icon: Icon, color, trend }) => (
         </div>
       </CardContent>
     </Card>
-  </motion.div>
-);
+  </motion.div>;
+
 
 const RecentActivity = ({ shops, inspections }) => {
   const activities = [
-    ...shops.slice(0, 3).map(shop => ({
-      type: 'shop',
-      title: `New shop profiled: ${shop.shop_name}`,
-      status: shop.compliance_status,
-      time: shop.created_date,
-      ward: shop.ward
-    })),
-    ...inspections.slice(0, 3).map(insp => ({
-      type: 'inspection',
-      title: `Inspection completed`,
-      status: insp.status,
-      score: insp.total_score,
-      time: insp.created_date
-    }))
-  ].sort((a, b) => new Date(b.time) - new Date(a.time)).slice(0, 5);
+  ...shops.slice(0, 3).map((shop) => ({
+    type: 'shop',
+    title: `New shop profiled: ${shop.shop_name}`,
+    status: shop.compliance_status,
+    time: shop.created_date,
+    ward: shop.ward
+  })),
+  ...inspections.slice(0, 3).map((insp) => ({
+    type: 'inspection',
+    title: `Inspection completed`,
+    status: insp.status,
+    score: insp.total_score,
+    time: insp.created_date
+  }))].
+  sort((a, b) => new Date(b.time) - new Date(a.time)).slice(0, 5);
 
   const getStatusColor = (status) => {
-    switch(status) {
-      case 'compliant': return 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30';
-      case 'non_compliant': return 'bg-red-500/20 text-red-400 border-red-500/30';
-      case 'partially_compliant': return 'bg-amber-500/20 text-amber-400 border-amber-500/30';
-      default: return 'bg-slate-500/20 text-slate-400 border-slate-500/30';
+    switch (status) {
+      case 'compliant':return 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30';
+      case 'non_compliant':return 'bg-red-500/20 text-red-400 border-red-500/30';
+      case 'partially_compliant':return 'bg-amber-500/20 text-amber-400 border-amber-500/30';
+      default:return 'bg-slate-500/20 text-slate-400 border-slate-500/30';
     }
   };
 
@@ -89,28 +89,28 @@ const RecentActivity = ({ shops, inspections }) => {
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0">
-        {activities.length === 0 ? (
-          <div className="p-8 text-center text-slate-400">
+        {activities.length === 0 ?
+        <div className="p-8 text-center text-slate-400">
             No recent activity yet
-          </div>
-        ) : (
-          <div className="divide-y divide-slate-700/50">
-            {activities.map((activity, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.1 }}
-                className="p-4 hover:bg-slate-800/50 transition-colors"
-              >
+          </div> :
+
+        <div className="divide-y divide-slate-700/50">
+            {activities.map((activity, i) =>
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: i * 0.1 }}
+            className="p-4 hover:bg-slate-800/50 transition-colors">
+
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className={`w-2 h-2 rounded-full ${activity.type === 'shop' ? 'bg-cyan-400' : 'bg-amber-400'}`} />
                     <div>
                       <p className="text-white text-sm font-medium">{activity.title}</p>
-                      {activity.ward && (
-                        <p className="text-slate-400 text-xs">Ward {activity.ward}</p>
-                      )}
+                      {activity.ward &&
+                  <p className="text-slate-400 text-xs">Ward {activity.ward}</p>
+                  }
                     </div>
                   </div>
                   <Badge className={getStatusColor(activity.status)}>
@@ -118,16 +118,16 @@ const RecentActivity = ({ shops, inspections }) => {
                   </Badge>
                 </div>
               </motion.div>
-            ))}
+          )}
           </div>
-        )}
+        }
       </CardContent>
-    </Card>
-  );
+    </Card>);
+
 };
 
-const QuickActions = () => (
-  <Card className="bg-gradient-to-br from-slate-900 to-slate-800 border-slate-700/50">
+const QuickActions = () =>
+<Card className="bg-gradient-to-br from-slate-900 to-slate-800 border-slate-700/50">
     <CardHeader className="border-b border-slate-700/50">
       <CardTitle className="text-white">Quick Actions</CardTitle>
     </CardHeader>
@@ -142,7 +142,7 @@ const QuickActions = () => (
         </Button>
       </Link>
       <Link to={createPageUrl('Shops')}>
-        <Button variant="outline" className="w-full border-slate-600 text-white hover:bg-slate-700 justify-start gap-3 h-14">
+        <Button variant="outline" className="bg-gray-500 text-white px-4 py-2 text-sm font-medium rounded-md inline-flex items-center whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border shadow-sm hover:text-accent-foreground w-full border-slate-600 hover:bg-slate-700 justify-start gap-3 h-14">
           <Store className="w-5 h-5" />
           <div className="text-left">
             <p className="font-semibold">View All Shops</p>
@@ -151,7 +151,7 @@ const QuickActions = () => (
         </Button>
       </Link>
       <Link to={createPageUrl('Analytics')}>
-        <Button variant="outline" className="w-full border-slate-600 text-white hover:bg-slate-700 justify-start gap-3 h-14">
+        <Button variant="outline" className="bg-gray-500 text-white px-4 py-2 text-sm font-medium rounded-md inline-flex items-center whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border shadow-sm hover:text-accent-foreground w-full border-slate-600 hover:bg-slate-700 justify-start gap-3 h-14">
           <TrendingUp className="w-5 h-5" />
           <div className="text-left">
             <p className="font-semibold">Analytics & Reports</p>
@@ -160,7 +160,7 @@ const QuickActions = () => (
         </Button>
       </Link>
       <Link to={createPageUrl('MapView')}>
-        <Button variant="outline" className="w-full border-slate-600 text-white hover:bg-slate-700 justify-start gap-3 h-14">
+        <Button variant="outline" className="bg-gray-500 text-white px-4 py-2 text-sm font-medium rounded-md inline-flex items-center whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border shadow-sm hover:text-accent-foreground w-full border-slate-600 hover:bg-slate-700 justify-start gap-3 h-14">
           <MapPin className="w-5 h-5" />
           <div className="text-left">
             <p className="font-semibold">Open Map View</p>
@@ -169,22 +169,22 @@ const QuickActions = () => (
         </Button>
       </Link>
     </CardContent>
-  </Card>
-);
+  </Card>;
+
 
 const ComplianceBreakdown = ({ shops }) => {
-  const compliant = shops.filter(s => s.compliance_status === 'compliant').length;
-  const partial = shops.filter(s => s.compliance_status === 'partially_compliant').length;
-  const nonCompliant = shops.filter(s => s.compliance_status === 'non_compliant').length;
-  const pending = shops.filter(s => s.compliance_status === 'pending' || !s.compliance_status).length;
+  const compliant = shops.filter((s) => s.compliance_status === 'compliant').length;
+  const partial = shops.filter((s) => s.compliance_status === 'partially_compliant').length;
+  const nonCompliant = shops.filter((s) => s.compliance_status === 'non_compliant').length;
+  const pending = shops.filter((s) => s.compliance_status === 'pending' || !s.compliance_status).length;
   const total = shops.length || 1;
 
   const segments = [
-    { label: 'Compliant', count: compliant, color: 'bg-emerald-500', percent: (compliant/total*100).toFixed(0) },
-    { label: 'Partial', count: partial, color: 'bg-amber-500', percent: (partial/total*100).toFixed(0) },
-    { label: 'Non-Compliant', count: nonCompliant, color: 'bg-red-500', percent: (nonCompliant/total*100).toFixed(0) },
-    { label: 'Pending', count: pending, color: 'bg-slate-500', percent: (pending/total*100).toFixed(0) },
-  ];
+  { label: 'Compliant', count: compliant, color: 'bg-emerald-500', percent: (compliant / total * 100).toFixed(0) },
+  { label: 'Partial', count: partial, color: 'bg-amber-500', percent: (partial / total * 100).toFixed(0) },
+  { label: 'Non-Compliant', count: nonCompliant, color: 'bg-red-500', percent: (nonCompliant / total * 100).toFixed(0) },
+  { label: 'Pending', count: pending, color: 'bg-slate-500', percent: (pending / total * 100).toFixed(0) }];
+
 
   return (
     <Card className="bg-gradient-to-br from-slate-900 to-slate-800 border-slate-700/50">
@@ -196,28 +196,28 @@ const ComplianceBreakdown = ({ shops }) => {
       </CardHeader>
       <CardContent className="p-6">
         <div className="h-4 flex rounded-full overflow-hidden mb-6">
-          {segments.map((seg, i) => (
-            <div 
-              key={i}
-              className={`${seg.color} transition-all duration-500`}
-              style={{ width: `${seg.percent}%` }}
-            />
-          ))}
+          {segments.map((seg, i) =>
+          <div
+            key={i}
+            className={`${seg.color} transition-all duration-500`}
+            style={{ width: `${seg.percent}%` }} />
+
+          )}
         </div>
         <div className="grid grid-cols-2 gap-4">
-          {segments.map((seg, i) => (
-            <div key={i} className="flex items-center gap-3">
+          {segments.map((seg, i) =>
+          <div key={i} className="flex items-center gap-3">
               <div className={`w-3 h-3 rounded-full ${seg.color}`} />
               <div>
                 <p className="text-white font-semibold">{seg.count}</p>
                 <p className="text-slate-400 text-sm">{seg.label}</p>
               </div>
             </div>
-          ))}
+          )}
         </div>
       </CardContent>
-    </Card>
-  );
+    </Card>);
+
 };
 
 export default function Dashboard() {
@@ -232,23 +232,23 @@ export default function Dashboard() {
   });
 
   const totalShops = shops.length;
-  const compliantShops = shops.filter(s => s.compliance_status === 'compliant').length;
-  const fundingReady = shops.filter(s => s.funding_status === 'eligible').length;
-  const criticalRisk = shops.filter(s => s.risk_level === 'critical' || s.risk_level === 'high').length;
-  const complianceRate = totalShops > 0 ? ((compliantShops / totalShops) * 100).toFixed(0) : 0;
+  const compliantShops = shops.filter((s) => s.compliance_status === 'compliant').length;
+  const fundingReady = shops.filter((s) => s.funding_status === 'eligible').length;
+  const criticalRisk = shops.filter((s) => s.risk_level === 'critical' || s.risk_level === 'high').length;
+  const complianceRate = totalShops > 0 ? (compliantShops / totalShops * 100).toFixed(0) : 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4 md:p-6">
+    <div className="bg-slate-300 p-4 min-h-screen from-slate-950 via-slate-900 to-slate-950 md:p-6">
       {/* Header */}
       <div className="mb-8">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
-        >
+          className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
           <div>
-            <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight">
-              Command Centre
+            <h1 className="text-slate-800 text-3xl font-bold tracking-tight md:text-4xl">Command Centre
+
             </h1>
             <p className="text-slate-400 mt-1">
               Spaza Compliance & Funding Readiness Dashboard
@@ -271,29 +271,29 @@ export default function Dashboard() {
           subtitle="Registered in system"
           icon={Store}
           color="bg-cyan-500"
-          trend={totalShops > 0 ? "+12% this week" : null}
-        />
+          trend={totalShops > 0 ? "+12% this week" : null} />
+
         <StatCard
           title="Compliance Rate"
           value={`${complianceRate}%`}
           subtitle={`${compliantShops} shops compliant`}
           icon={ClipboardCheck}
-          color="bg-emerald-500"
-        />
+          color="bg-emerald-500" />
+
         <StatCard
           title="Funding Ready"
           value={fundingReady}
           subtitle="Eligible for NEF support"
           icon={DollarSign}
-          color="bg-amber-500"
-        />
+          color="bg-amber-500" />
+
         <StatCard
           title="Critical Risk"
           value={criticalRisk}
           subtitle="Require immediate action"
           icon={AlertTriangle}
-          color="bg-red-500"
-        />
+          color="bg-red-500" />
+
       </div>
 
       {/* Main Content Grid */}
@@ -352,6 +352,6 @@ export default function Dashboard() {
           YamiMine Solutions • Enterprise iLembe Development Agency
         </p>
       </div>
-    </div>
-  );
+    </div>);
+
 }
