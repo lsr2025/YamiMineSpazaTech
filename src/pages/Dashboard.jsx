@@ -142,7 +142,7 @@ const QuickActions = () =>
         </Button>
       </Link>
       <Link to={createPageUrl('Shops')}>
-        <Button variant="outline" className="w-full border-slate-600 text-white hover:bg-slate-700 justify-start gap-3 h-14">
+        <Button variant="outline" className="bg-gray-500 text-white px-4 py-2 text-sm font-medium rounded-md inline-flex items-center whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border shadow-sm hover:text-accent-foreground w-full border-slate-600 hover:bg-slate-700 justify-start gap-3 h-14">
           <Store className="w-5 h-5" />
           <div className="text-left">
             <p className="font-semibold">View All Shops</p>
@@ -151,7 +151,7 @@ const QuickActions = () =>
         </Button>
       </Link>
       <Link to={createPageUrl('Analytics')}>
-        <Button variant="outline" className="w-full border-slate-600 text-white hover:bg-slate-700 justify-start gap-3 h-14">
+        <Button variant="outline" className="bg-gray-500 text-white px-4 py-2 text-sm font-medium rounded-md inline-flex items-center whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border shadow-sm hover:text-accent-foreground w-full border-slate-600 hover:bg-slate-700 justify-start gap-3 h-14">
           <TrendingUp className="w-5 h-5" />
           <div className="text-left">
             <p className="font-semibold">Analytics & Reports</p>
@@ -160,7 +160,7 @@ const QuickActions = () =>
         </Button>
       </Link>
       <Link to={createPageUrl('MapView')}>
-        <Button variant="outline" className="w-full border-slate-600 text-white hover:bg-slate-700 justify-start gap-3 h-14">
+        <Button variant="outline" className="bg-gray-500 text-white px-4 py-2 text-sm font-medium rounded-md inline-flex items-center whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border shadow-sm hover:text-accent-foreground w-full border-slate-600 hover:bg-slate-700 justify-start gap-3 h-14">
           <MapPin className="w-5 h-5" />
           <div className="text-left">
             <p className="font-semibold">Open Map View</p>
@@ -238,17 +238,17 @@ export default function Dashboard() {
   const complianceRate = totalShops > 0 ? (compliantShops / totalShops * 100).toFixed(0) : 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4 md:p-6">
+    <div className="bg-slate-300 p-4 min-h-screen from-slate-950 via-slate-900 to-slate-950 md:p-6">
       {/* Header */}
       <div className="mb-8">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
-        >
+          className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
           <div>
-            <h1 className="text-3xl md:text-4xl font-bold text-white tracking-tight">
-              Command Centre
+            <h1 className="text-slate-800 text-3xl font-bold tracking-tight md:text-4xl">Command Centre
+
             </h1>
             <p className="text-slate-400 mt-1">
               Spaza Compliance & Funding Readiness Dashboard

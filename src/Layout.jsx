@@ -49,7 +49,7 @@ export default function Layout({ children, currentPageName }) {
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
       {/* Mobile Header */}
       <header className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-slate-900/95 backdrop-blur-sm border-b border-slate-800">
-        <div className="flex items-center justify-between p-4">
+        <div className="bg-slate-200 p-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Button
               variant="ghost"
@@ -61,7 +61,7 @@ export default function Layout({ children, currentPageName }) {
             </Button>
             <div>
               <h1 className="text-lg font-bold text-white tracking-tight">
-                <span className="text-red-500">Yami</span>Mine
+                <span className="text-blue-900 text-xl">Yami</span>Mine
               </h1>
               <p className="text-[10px] text-slate-400 -mt-0.5">Spaza Compliance</p>
             </div>
@@ -84,19 +84,19 @@ export default function Layout({ children, currentPageName }) {
       }
 
       {/* Sidebar */}
-      <aside className="bg-slate-100 fixed top-0 left-0 h-full z-50 w-72 from-slate-900 to-slate-950 border-r border-slate-800 transform transition-transform duration-300 ease-in-out lg:translate-x-0 translate-x-0">
-
-
-
-
-
-
+      <aside className={`
+        fixed top-0 left-0 h-full z-50 w-72
+        bg-gradient-to-b from-slate-900 to-slate-950 border-r border-slate-800
+        transform transition-transform duration-300 ease-in-out
+        lg:translate-x-0
+        ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+      `}>
         {/* Logo */}
         <div className="p-6 border-b border-slate-800">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold text-white tracking-tight">
-                <span className="text-sky-900">Yami</span>Mine
+                <span className="text-red-500">Yami</span>Mine
               </h1>
               <p className="text-xs text-slate-400 mt-0.5">Spaza Compliance & Funding</p>
             </div>
@@ -112,7 +112,7 @@ export default function Layout({ children, currentPageName }) {
         </div>
 
         {/* Navigation */}
-        <nav className="bg-slate-100 p-4 space-y-2">
+        <nav className="p-4 space-y-2">
           {navItems.map((item) => {
             const isActive = currentPageName === item.page;
             const Icon = item.icon;
@@ -122,14 +122,14 @@ export default function Layout({ children, currentPageName }) {
                 to={createPageUrl(item.page)}
                 onClick={() => setSidebarOpen(false)}>
 
-                <div className="bg-slate-200 text-white px-4 py-3 rounded-xl flex items-center gap-3 transition-all from-red-600/20 to-transparent border-l-4 border-red-500">
-
-
-
-
-
-
-                  <Icon className="bg-slate-950 text-gray-600 lucide lucide-layout-dashboard w-5 h-5" />
+                <div className={`
+                  flex items-center gap-3 px-4 py-3 rounded-xl transition-all
+                  ${isActive ?
+                'bg-gradient-to-r from-red-600/20 to-transparent text-white border-l-4 border-red-500' :
+                'text-slate-400 hover:bg-slate-800/50 hover:text-white'}
+                `
+                }>
+                  <Icon className={`w-5 h-5 ${isActive ? 'text-red-400' : ''}`} />
                   <span className="font-medium">{item.name}</span>
                   {isActive && <ChevronRight className="w-4 h-4 ml-auto" />}
                 </div>
