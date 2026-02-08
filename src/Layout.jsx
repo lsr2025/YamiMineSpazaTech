@@ -43,6 +43,13 @@ export default function Layout({ children, currentPageName }) {
     await base44.auth.logout();
   };
 
+  // Redirect to welcome if no role is set
+  useEffect(() => {
+    if (user && !user.user_role && currentPageName !== 'Welcome') {
+      navigate(createPageUrl('Welcome'));
+    }
+  }, [user, currentPageName, navigate]);
+
   // Check if user needs to agree to T&Cs
   const showTermsModal = user && !user.terms_agreed;
 
@@ -51,13 +58,6 @@ export default function Layout({ children, currentPageName }) {
   if (fullScreenPages.includes(currentPageName)) {
     return children;
   }
-
-  // Redirect to welcome if no role is set
-  useEffect(() => {
-    if (user && !user.user_role && currentPageName !== 'Welcome') {
-      navigate(createPageUrl('Welcome'));
-    }
-  }, [user, currentPageName, navigate]);
 
   return (
     <div className="min-h-screen bg-white">
