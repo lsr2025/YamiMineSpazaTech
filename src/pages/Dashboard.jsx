@@ -142,7 +142,7 @@ const QuickActions = () =>
         </Button>
       </Link>
       <Link to={createPageUrl('Shops')}>
-        <Button variant="outline" className="bg-gray-500 text-white px-4 py-2 text-sm font-medium rounded-md inline-flex items-center whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border shadow-sm hover:text-accent-foreground w-full border-slate-600 hover:bg-slate-700 justify-start gap-3 h-14">
+        <Button variant="outline" className="w-full border-slate-600 text-white hover:bg-slate-700 justify-start gap-3 h-14">
           <Store className="w-5 h-5" />
           <div className="text-left">
             <p className="font-semibold">View All Shops</p>
@@ -151,7 +151,7 @@ const QuickActions = () =>
         </Button>
       </Link>
       <Link to={createPageUrl('Analytics')}>
-        <Button variant="outline" className="bg-gray-500 text-white px-4 py-2 text-sm font-medium rounded-md inline-flex items-center whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border shadow-sm hover:text-accent-foreground w-full border-slate-600 hover:bg-slate-700 justify-start gap-3 h-14">
+        <Button variant="outline" className="w-full border-slate-600 text-white hover:bg-slate-700 justify-start gap-3 h-14">
           <TrendingUp className="w-5 h-5" />
           <div className="text-left">
             <p className="font-semibold">Analytics & Reports</p>
@@ -160,7 +160,7 @@ const QuickActions = () =>
         </Button>
       </Link>
       <Link to={createPageUrl('MapView')}>
-        <Button variant="outline" className="bg-gray-500 text-white px-4 py-2 text-sm font-medium rounded-md inline-flex items-center whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border shadow-sm hover:text-accent-foreground w-full border-slate-600 hover:bg-slate-700 justify-start gap-3 h-14">
+        <Button variant="outline" className="w-full border-slate-600 text-white hover:bg-slate-700 justify-start gap-3 h-14">
           <MapPin className="w-5 h-5" />
           <div className="text-left">
             <p className="font-semibold">Open Map View</p>
