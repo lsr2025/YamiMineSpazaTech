@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import {
+import { 
   ArrowLeft,
   Store,
   MapPin,
@@ -19,8 +19,8 @@ import {
   Clock,
   AlertTriangle,
   ExternalLink,
-  ZoomIn } from
-'lucide-react';
+  ZoomIn
+} from 'lucide-react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -62,11 +62,11 @@ const redIcon = createCustomIcon('#ef4444');
 const grayIcon = createCustomIcon('#64748b');
 
 const getMarkerIcon = (status) => {
-  switch (status) {
-    case 'compliant':return greenIcon;
-    case 'partially_compliant':return amberIcon;
-    case 'non_compliant':return redIcon;
-    default:return grayIcon;
+  switch(status) {
+    case 'compliant': return greenIcon;
+    case 'partially_compliant': return amberIcon;
+    case 'non_compliant': return redIcon;
+    default: return grayIcon;
   }
 };
 
@@ -82,13 +82,13 @@ const StatusBadge = ({ status }) => {
   return (
     <Badge className={config.color}>
       {config.label}
-    </Badge>);
-
+    </Badge>
+  );
 };
 
-const MapLegend = () =>
-<div className="absolute bottom-4 left-4 z-[1000] bg-slate-900/95 backdrop-blur-sm rounded-lg p-4 border border-slate-700">
-    <p className="text-white font-semibold text-sm mb-3">MAP KEY</p>
+const MapLegend = () => (
+  <div className="absolute bottom-4 left-4 z-[1000] bg-slate-900/95 backdrop-blur-sm rounded-lg p-4 border border-slate-700">
+    <p className="text-white font-semibold text-sm mb-3">Legend</p>
     <div className="space-y-2">
       <div className="flex items-center gap-2">
         <div className="w-4 h-4 rounded-full bg-emerald-500" />
@@ -107,14 +107,14 @@ const MapLegend = () =>
         <span className="text-slate-300 text-xs">Pending</span>
       </div>
     </div>
-  </div>;
-
+  </div>
+);
 
 const StatsPanel = ({ shops }) => {
-  const compliant = shops.filter((s) => s.compliance_status === 'compliant').length;
-  const partial = shops.filter((s) => s.compliance_status === 'partially_compliant').length;
-  const nonCompliant = shops.filter((s) => s.compliance_status === 'non_compliant').length;
-  const pending = shops.filter((s) => !s.compliance_status || s.compliance_status === 'pending').length;
+  const compliant = shops.filter(s => s.compliance_status === 'compliant').length;
+  const partial = shops.filter(s => s.compliance_status === 'partially_compliant').length;
+  const nonCompliant = shops.filter(s => s.compliance_status === 'non_compliant').length;
+  const pending = shops.filter(s => !s.compliance_status || s.compliance_status === 'pending').length;
 
   return (
     <div className="absolute top-4 right-4 z-[1000] bg-slate-900/95 backdrop-blur-sm rounded-lg border border-slate-700 overflow-hidden w-64">
@@ -152,24 +152,24 @@ const StatsPanel = ({ shops }) => {
           <span className="text-white font-semibold">{pending}</span>
         </div>
       </div>
-    </div>);
-
+    </div>
+  );
 };
 
-const ShopPopup = ({ shop }) =>
-<div className="min-w-[200px]">
+const ShopPopup = ({ shop }) => (
+  <div className="min-w-[200px]">
     <div className="flex items-start gap-3 mb-3">
-      {shop.shop_photo_url ?
-    <img
-      src={shop.shop_photo_url}
-      alt={shop.shop_name}
-      className="w-16 h-16 rounded-lg object-cover" /> :
-
-
-    <div className="w-16 h-16 rounded-lg bg-slate-700 flex items-center justify-center">
+      {shop.shop_photo_url ? (
+        <img 
+          src={shop.shop_photo_url} 
+          alt={shop.shop_name}
+          className="w-16 h-16 rounded-lg object-cover"
+        />
+      ) : (
+        <div className="w-16 h-16 rounded-lg bg-slate-700 flex items-center justify-center">
           <Store className="w-6 h-6 text-slate-500" />
         </div>
-    }
+      )}
       <div>
         <h3 className="font-semibold text-slate-900">{shop.shop_name}</h3>
         <p className="text-slate-600 text-sm">{shop.owner_name}</p>
@@ -178,14 +178,14 @@ const ShopPopup = ({ shop }) =>
     </div>
     
     <div className="space-y-1 mb-3">
-      {shop.ward &&
-    <p className="text-sm text-slate-600">Ward: {shop.ward}</p>
-    }
-      {shop.compliance_score !== undefined &&
-    <p className="text-sm text-slate-600">
+      {shop.ward && (
+        <p className="text-sm text-slate-600">Ward: {shop.ward}</p>
+      )}
+      {shop.compliance_score !== undefined && (
+        <p className="text-sm text-slate-600">
           Score: <span className="font-semibold">{shop.compliance_score}%</span>
         </p>
-    }
+      )}
     </div>
 
     <Link to={createPageUrl(`ShopDetail?id=${shop.id}`)}>
@@ -194,8 +194,8 @@ const ShopPopup = ({ shop }) =>
         <ExternalLink className="w-3 h-3" />
       </Button>
     </Link>
-  </div>;
-
+  </div>
+);
 
 export default function MapView() {
   const [statusFilter, setStatusFilter] = useState('all');
@@ -208,7 +208,7 @@ export default function MapView() {
 
   // Filter shops with valid GPS coordinates
   const mappableShops = useMemo(() => {
-    return shops.filter((shop) => {
+    return shops.filter(shop => {
       const hasCoords = shop.gps_latitude && shop.gps_longitude;
       const matchesStatus = statusFilter === 'all' || shop.compliance_status === statusFilter;
       const matchesMunicipality = municipalityFilter === 'all' || shop.municipality === municipalityFilter;
@@ -230,7 +230,7 @@ export default function MapView() {
   return (
     <div className="h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex flex-col">
       {/* Header */}
-      <div className="bg-blue-900 p-4 opacity-100 border-b border-slate-800">
+      <div className="p-4 border-b border-slate-800">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link to={createPageUrl('Dashboard')}>
@@ -276,62 +276,62 @@ export default function MapView() {
       </div>
 
       {/* Map Container */}
-      <div className="bg-transparent opacity-100 flex-1 relative">
-        {isLoading ?
-        <div className="absolute inset-0 flex items-center justify-center bg-slate-900">
+      <div className="flex-1 relative">
+        {isLoading ? (
+          <div className="absolute inset-0 flex items-center justify-center bg-slate-900">
             <div className="text-center">
               <div className="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
               <p className="text-slate-400">Loading map data...</p>
             </div>
-          </div> :
-        mappableShops.length === 0 ?
-        <div className="absolute inset-0 flex items-center justify-center bg-slate-900">
+          </div>
+        ) : mappableShops.length === 0 ? (
+          <div className="absolute inset-0 flex items-center justify-center bg-slate-900">
             <Card className="bg-slate-800 border-slate-700 p-8 text-center">
               <MapPin className="w-16 h-16 text-slate-600 mx-auto mb-4" />
               <h2 className="text-white text-xl font-semibold mb-2">No Shops to Display</h2>
               <p className="text-slate-400 mb-4">
-                {shops.length === 0 ?
-              'Start by profiling shops with GPS coordinates' :
-              'No shops match your current filters or have GPS data'}
+                {shops.length === 0 
+                  ? 'Start by profiling shops with GPS coordinates'
+                  : 'No shops match your current filters or have GPS data'}
               </p>
               <Link to={createPageUrl('NewShop')}>
                 <Button className="bg-red-600 hover:bg-red-700">Profile New Shop</Button>
               </Link>
             </Card>
-          </div> :
-
-        <MapContainer
-          center={mapCenter}
-          zoom={10}
-          style={{ height: '100%', width: '100%' }}
-          className="z-0">
-
+          </div>
+        ) : (
+          <MapContainer
+            center={mapCenter}
+            zoom={10}
+            style={{ height: '100%', width: '100%' }}
+            className="z-0"
+          >
             <TileLayer
-            url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>' />
-
+              url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+            />
             
-            {mappableShops.map((shop) =>
-          <Marker
-            key={shop.id}
-            position={[shop.gps_latitude, shop.gps_longitude]}
-            icon={getMarkerIcon(shop.compliance_status)}>
-
+            {mappableShops.map(shop => (
+              <Marker
+                key={shop.id}
+                position={[shop.gps_latitude, shop.gps_longitude]}
+                icon={getMarkerIcon(shop.compliance_status)}
+              >
                 <Popup>
                   <ShopPopup shop={shop} />
                 </Popup>
               </Marker>
-          )}
+            ))}
           </MapContainer>
-        }
+        )}
 
         {/* Overlays */}
-        {mappableShops.length > 0 &&
-        <>
+        {mappableShops.length > 0 && (
+          <>
             <MapLegend />
             <StatsPanel shops={mappableShops} />
           </>
-        }
+        )}
       </div>
 
       {/* Footer */}
@@ -340,6 +340,6 @@ export default function MapView() {
           Powered by <span className="text-cyan-400 font-semibold">Kelestone Capital</span>
         </p>
       </div>
-    </div>);
-
+    </div>
+  );
 }
