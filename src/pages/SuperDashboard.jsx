@@ -93,7 +93,7 @@ export default function SuperDashboard() {
   const totalHours = attendance.reduce((sum, a) => sum + (a.hours_worked || 0), 0);
 
   const compliantShops = filteredShops.filter(s => s.compliance_status === 'compliant').length;
-  const complianceRate = filteredShops.length > 0 ? ((compliant Shops / filteredShops.length) * 100).toFixed(0) : 0;
+  const complianceRate = filteredShops.length > 0 ? ((compliantShops / filteredShops.length) * 100).toFixed(0) : 0;
   const criticalRisk = filteredShops.filter(s => s.risk_level === 'critical' || s.risk_level === 'high').length;
 
   // Chart data - last 7 days
