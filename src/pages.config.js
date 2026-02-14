@@ -58,6 +58,9 @@ import Shops from './pages/Shops';
 import HRDashboard from './pages/HRDashboard';
 import AttendanceTracking from './pages/AttendanceTracking';
 import AgentProfile from './pages/AgentProfile';
+import ShiftManagement from './pages/ShiftManagement';
+import LeaveManagement from './pages/LeaveManagement';
+import SuperDashboard from './pages/SuperDashboard';
 import __Layout from './Layout.jsx';
 
 
@@ -73,6 +76,9 @@ export const PAGES = {
     "HRDashboard": HRDashboard,
     "AttendanceTracking": AttendanceTracking,
     "AgentProfile": AgentProfile,
+    "ShiftManagement": ShiftManagement,
+    "LeaveManagement": LeaveManagement,
+    "SuperDashboard": SuperDashboard,
 }
 
 export const pagesConfig = {

@@ -23,11 +23,11 @@ import {
 } from 'lucide-react';
 
 const navItems = [
-{ name: 'Dashboard', icon: LayoutDashboard, page: 'Dashboard' },
+{ name: 'Super Dashboard', icon: LayoutDashboard, page: 'SuperDashboard' },
 { name: 'Shops', icon: Store, page: 'Shops' },
 { name: 'Map View', icon: MapPin, page: 'MapView' },
 { name: 'Analytics', icon: BarChart3, page: 'Analytics' },
-{ name: 'HR Management', icon: Users, page: 'HRDashboard' }];
+{ name: 'HR', icon: Users, page: 'HRDashboard' }];
 
 
 export default function Layout({ children, currentPageName }) {
