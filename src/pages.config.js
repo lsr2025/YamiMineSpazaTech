@@ -66,6 +66,8 @@ import MobileLeave from './pages/MobileLeave';
 import MySchedule from './pages/MySchedule';
 import MyProfile from './pages/MyProfile';
 import MobileSupervisor from './pages/MobileSupervisor';
+import OnboardingChecklist from './pages/OnboardingChecklist';
+import OnboardingManagement from './pages/OnboardingManagement';
 import __Layout from './Layout.jsx';
 
 
@@ -89,6 +91,8 @@ export const PAGES = {
     "MySchedule": MySchedule,
     "MyProfile": MyProfile,
     "MobileSupervisor": MobileSupervisor,
+    "OnboardingChecklist": OnboardingChecklist,
+    "OnboardingManagement": OnboardingManagement,
 }
 
 export const pagesConfig = {

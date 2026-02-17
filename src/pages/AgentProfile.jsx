@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { format } from 'date-fns';
+import { Progress } from "@/components/ui/progress";
 
 const InfoRow = ({ icon: Icon, label, value, color = "text-slate-400" }) => (
   <div className="flex items-start gap-3 p-3 bg-slate-800/30 rounded-lg">
@@ -308,6 +309,45 @@ export default function AgentProfile() {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Onboarding Status */}
+            {onboarding && (
+              <Card className="bg-gradient-to-br from-slate-900 to-slate-800 border-slate-700/50 mb-6">
+                <CardHeader>
+                  <CardTitle className="text-white flex items-center justify-between">
+                    <span>Onboarding Status</span>
+                    <Badge className={
+                      onboarding.status === 'completed' ? 'bg-emerald-500/20 text-emerald-400' :
+                      onboarding.status === 'in_progress' ? 'bg-amber-500/20 text-amber-400' :
+                      'bg-slate-500/20 text-slate-400'
+                    }>
+                      {onboarding.status?.replace('_', ' ')}
+                    </Badge>
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="mb-4">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-slate-400 text-sm">Progress</span>
+                      <span className="text-white font-semibold">{onboarding.progress_percentage}%</span>
+                    </div>
+                    <Progress value={onboarding.progress_percentage} className="h-2" />
+                  </div>
+                  {onboarding.status !== 'completed' && (
+                    <Link to={createPageUrl(`OnboardingChecklist?id=${onboarding.id}`)}>
+                      <Button className="w-full bg-cyan-600 hover:bg-cyan-700">
+                        View Checklist
+                      </Button>
+                    </Link>
+                  )}
+                  {onboarding.completion_date && (
+                    <p className="text-slate-400 text-sm mt-2 text-center">
+                      Completed on {format(new Date(onboarding.completion_date), 'MMM dd, yyyy')}
+                    </p>
+                  )}
+                </CardContent>
+              </Card>
+            )}
 
             {/* Skills */}
             {agent.skills && agent.skills.length > 0 && (
