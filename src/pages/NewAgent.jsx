@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, Loader2, Save } from 'lucide-react';
+import { ArrowLeft, Loader2, Save, Upload } from 'lucide-react';
 import { toast } from 'sonner';
 
 export default function NewAgent() {
@@ -75,16 +75,23 @@ export default function NewAgent() {
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4 md:p-6">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
-        <div className="mb-6 flex items-center gap-3">
-          <Link to={createPageUrl('HRDashboard')}>
-            <Button variant="ghost" size="icon" className="text-slate-400 hover:text-white">
-              <ArrowLeft className="w-5 h-5" />
+        <div className="mb-6 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Link to={createPageUrl('HRDashboard')}>
+              <Button variant="ghost" size="icon" className="text-slate-400 hover:text-white">
+                <ArrowLeft className="w-5 h-5" />
+              </Button>
+            </Link>
+            <div>
+              <h1 className="text-2xl font-bold text-white">Add New Field Agent</h1>
+              <p className="text-slate-400 text-sm">Register a new field agent to the system</p>
+            </div>
+          </div>
+          <Link to={createPageUrl('BulkImportAgents')}>
+            <Button className="bg-cyan-600 hover:bg-cyan-700">
+              Bulk Import
             </Button>
           </Link>
-          <div>
-            <h1 className="text-2xl font-bold text-white">Add New Field Agent</h1>
-            <p className="text-slate-400 text-sm">Register a new field agent to the system</p>
-          </div>
         </div>
 
         {/* Form */}

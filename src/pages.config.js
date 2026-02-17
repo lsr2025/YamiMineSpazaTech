@@ -72,6 +72,7 @@ import TeamManagement from './pages/TeamManagement';
 import TaskAssignment from './pages/TaskAssignment';
 import TaskMonitoring from './pages/TaskMonitoring';
 import NewAgent from './pages/NewAgent';
+import BulkImportAgents from './pages/BulkImportAgents';
 import __Layout from './Layout.jsx';
 
 
@@ -101,6 +102,7 @@ export const PAGES = {
     "TaskAssignment": TaskAssignment,
     "TaskMonitoring": TaskMonitoring,
     "NewAgent": NewAgent,
+    "BulkImportAgents": BulkImportAgents,
 }
 
 export const pagesConfig = {
