@@ -53,6 +53,16 @@ export default function AgentProfile() {
     enabled: !!agent?.user_email
   });
 
+  const { data: onboarding } = useQuery({
+    queryKey: ['agent-onboarding', agent?.user_email],
+    queryFn: async () => {
+      if (!agent?.user_email) return null;
+      const records = await base44.entities.Onboarding.filter({ agent_email: agent.user_email });
+      return records[0] || null;
+    },
+    enabled: !!agent?.user_email
+  });
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center">
