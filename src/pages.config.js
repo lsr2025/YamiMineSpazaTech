@@ -50,6 +50,7 @@
 import AgentProfile from './pages/AgentProfile';
 import Analytics from './pages/Analytics';
 import AttendanceTracking from './pages/AttendanceTracking';
+import BulkImportAgents from './pages/BulkImportAgents';
 import Dashboard from './pages/Dashboard';
 import HRDashboard from './pages/HRDashboard';
 import Home from './pages/Home';
@@ -60,6 +61,7 @@ import MobileLeave from './pages/MobileLeave';
 import MobileSupervisor from './pages/MobileSupervisor';
 import MyProfile from './pages/MyProfile';
 import MySchedule from './pages/MySchedule';
+import NewAgent from './pages/NewAgent';
 import NewInspection from './pages/NewInspection';
 import NewShop from './pages/NewShop';
 import OnboardingChecklist from './pages/OnboardingChecklist';
@@ -68,11 +70,10 @@ import ShiftManagement from './pages/ShiftManagement';
 import ShopDetail from './pages/ShopDetail';
 import Shops from './pages/Shops';
 import SuperDashboard from './pages/SuperDashboard';
-import TeamManagement from './pages/TeamManagement';
 import TaskAssignment from './pages/TaskAssignment';
 import TaskMonitoring from './pages/TaskMonitoring';
-import NewAgent from './pages/NewAgent';
-import BulkImportAgents from './pages/BulkImportAgents';
+import TeamManagement from './pages/TeamManagement';
+import AgentPerformanceReports from './pages/AgentPerformanceReports';
 import __Layout from './Layout.jsx';
 
 
@@ -80,6 +81,7 @@ export const PAGES = {
     "AgentProfile": AgentProfile,
     "Analytics": Analytics,
     "AttendanceTracking": AttendanceTracking,
+    "BulkImportAgents": BulkImportAgents,
     "Dashboard": Dashboard,
     "HRDashboard": HRDashboard,
     "Home": Home,
@@ -90,6 +92,7 @@ export const PAGES = {
     "MobileSupervisor": MobileSupervisor,
     "MyProfile": MyProfile,
     "MySchedule": MySchedule,
+    "NewAgent": NewAgent,
     "NewInspection": NewInspection,
     "NewShop": NewShop,
     "OnboardingChecklist": OnboardingChecklist,
@@ -98,11 +101,10 @@ export const PAGES = {
     "ShopDetail": ShopDetail,
     "Shops": Shops,
     "SuperDashboard": SuperDashboard,
-    "TeamManagement": TeamManagement,
     "TaskAssignment": TaskAssignment,
     "TaskMonitoring": TaskMonitoring,
-    "NewAgent": NewAgent,
-    "BulkImportAgents": BulkImportAgents,
+    "TeamManagement": TeamManagement,
+    "AgentPerformanceReports": AgentPerformanceReports,
 }
 
 export const pagesConfig = {
