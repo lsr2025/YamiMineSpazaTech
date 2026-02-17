@@ -124,11 +124,6 @@ export default function HRDashboard() {
     queryFn: () => base44.entities.Attendance.list('-date', 200)
   });
 
-  const { data: onboardingRecords = [] } = useQuery({
-    queryKey: ['onboarding-records'],
-    queryFn: () => base44.entities.Onboarding.list('-created_date', 50)
-  });
-
   const today = new Date().toISOString().split('T')[0];
   const todayAttendance = attendance.filter(a => a.date === today);
   const checkedIn = todayAttendance.filter(a => a.status === 'checked_in').length;
@@ -138,7 +133,6 @@ export default function HRDashboard() {
   ).length;
 
   const totalHoursToday = todayAttendance.reduce((sum, a) => sum + (a.hours_worked || 0), 0);
-  const activeOnboarding = onboardingRecords.filter(o => o.status !== 'completed').length;
 
   const filteredAgents = agents.filter(agent =>
     agent.full_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -160,23 +154,11 @@ export default function HRDashboard() {
             </h1>
             <p className="text-slate-400 mt-1">Field Agent Performance & Development</p>
           </div>
-          <div className="flex items-center gap-3 flex-wrap">
-            <Link to={createPageUrl('TeamManagement')}>
-              <Button className="bg-cyan-600 hover:bg-cyan-700 gap-2">
-                <Users className="w-4 h-4" />
-                Teams & Tasks
-              </Button>
-            </Link>
+          <div className="flex items-center gap-3">
             <Link to={createPageUrl('AttendanceTracking')}>
-              <Button className="bg-blue-600 hover:bg-blue-700 gap-2">
+              <Button className="bg-cyan-600 hover:bg-cyan-700 gap-2">
                 <Calendar className="w-4 h-4" />
-                Attendance
-              </Button>
-            </Link>
-            <Link to={createPageUrl('OnboardingManagement')}>
-              <Button className="bg-amber-600 hover:bg-amber-700 gap-2">
-                <Target className="w-4 h-4" />
-                Onboarding
+                Track Attendance
               </Button>
             </Link>
             <Link to={createPageUrl('NewAgent')}>
@@ -190,7 +172,7 @@ export default function HRDashboard() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <StatCard
           title="Total Agents"
           value={agents.length}
@@ -218,13 +200,6 @@ export default function HRDashboard() {
           subtitle="Total hours worked"
           icon={Clock}
           color="bg-amber-500"
-        />
-        <StatCard
-          title="Active Onboarding"
-          value={activeOnboarding}
-          subtitle="New hires in progress"
-          icon={Award}
-          color="bg-red-500"
         />
       </div>
 
