@@ -470,13 +470,14 @@ export default function NewInspection() {
   const score = calculateScore();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4 md:p-6">
-      {/* Offline Banner */}
-      {!isOnline && (
-        <div className="px-4 py-2 bg-amber-600 text-white text-center text-sm font-medium flex items-center justify-center gap-2">
-          <WifiOff className="w-4 h-4" />
-          Offline Mode - Data will sync when connected
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4 md:p-6 pb-24 lg:pb-6">
+      {/* Offline / Saved indicator */}
+      {savedOffline ? (
+        <div className="mb-4 px-4 py-3 bg-emerald-600/20 border border-emerald-500/40 rounded-xl text-emerald-300 text-sm font-medium flex items-center gap-2">
+          <CheckCircle2 className="w-4 h-4" /> Inspection saved offline — will sync automatically when online
         </div>
+      ) : (
+        <OfflineStatusBar className="mb-4" />
       )}
 
       {/* Header */}
