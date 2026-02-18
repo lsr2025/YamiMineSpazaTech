@@ -297,7 +297,7 @@ export default function Shops() {
       {/* Footer */}
       <div className="mt-12 text-center">
         <p className="text-slate-500 text-sm">
-          Powered by <span className="text-cyan-400 font-semibold">Kelestone Capital</span>
+          Created by <span className="text-cyan-400 font-semibold">Kwahlelwa Group</span>
         </p>
       </div>
     </div>

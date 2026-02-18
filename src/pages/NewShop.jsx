@@ -1101,7 +1101,7 @@ export default function NewShop() {
           YMS-SEF: Final_Spaza_Shop_Assessment_Form
         </p>
         <p className="text-slate-500 text-xs mt-1">
-          Powered by <span className="text-cyan-400 font-semibold">Kelestone Capital</span>
+          Created by <span className="text-cyan-400 font-semibold">Kwahlelwa Group</span>
         </p>
       </div>
     </div>
