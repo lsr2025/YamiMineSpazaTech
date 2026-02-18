@@ -341,7 +341,7 @@ export default function Dashboard() {
       {/* Footer Branding */}
       <div className="mt-12 text-center">
         <p className="text-slate-500 text-sm">
-          Powered by <span className="bg-gradient-to-r from-[#0ea5e9] to-[#3b82f6] bg-clip-text text-transparent font-semibold">Kelestone Capital</span>
+          Created by <span className="bg-gradient-to-r from-[#0ea5e9] to-[#3b82f6] bg-clip-text text-transparent font-semibold">Kwahlelwa Group</span>
         </p>
       </div>
     </div>
