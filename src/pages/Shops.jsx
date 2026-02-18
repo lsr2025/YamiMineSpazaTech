@@ -141,10 +141,21 @@ export default function Shops() {
   const [statusFilter, setStatusFilter] = useState('all');
   const [municipalityFilter, setMunicipalityFilter] = useState('all');
   const [riskFilter, setRiskFilter] = useState('all');
+  const { isOnline } = useOfflineStatus();
 
   const { data: shops = [], isLoading } = useQuery({
     queryKey: ['shops'],
-    queryFn: () => base44.entities.Shop.list('-created_date', 200)
+    queryFn: async () => {
+      try {
+        const online = await base44.entities.Shop.list('-created_date', 200);
+        // Update cache whenever we fetch online
+        if (online.length > 0) await offlineStorage.cacheShops(online);
+        return online;
+      } catch {
+        // Offline — serve from cache
+        return offlineStorage.getCachedShops();
+      }
+    }
   });
 
   const filteredShops = shops.filter(shop => {
