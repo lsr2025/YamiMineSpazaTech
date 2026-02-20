@@ -323,6 +323,20 @@ export default function ShopDetail() {
       {/* Offline Status */}
       <OfflineStatusBar className="mb-4" />
 
+      {/* Pending edit banner */}
+      {pendingEdit && (
+        <div className="mb-4 flex items-center gap-2 bg-amber-950/70 border border-amber-700/50 text-amber-300 rounded-lg px-4 py-2 text-sm">
+          <WifiOff className="w-4 h-4 shrink-0" />
+          Edits saved offline — will sync automatically when you reconnect.
+        </div>
+      )}
+
+      {saveMsg && (
+        <div className="mb-4 bg-emerald-900/50 border border-emerald-700/50 text-emerald-300 rounded-lg px-4 py-2 text-sm">
+          {saveMsg}
+        </div>
+      )}
+
       {/* Header */}
       <div className="mb-6">
         <div className="flex items-center gap-3 mb-4">
@@ -332,9 +346,40 @@ export default function ShopDetail() {
             </Button>
           </Link>
           <div className="flex-1">
-            <h1 className="text-2xl md:text-3xl font-bold text-white">{shop.shop_name}</h1>
-            <p className="text-slate-400">{shop.owner_name}</p>
+            {isEditing ? (
+              <Input
+                value={editData.shop_name}
+                onChange={e => setEditData(d => ({ ...d, shop_name: e.target.value }))}
+                className="text-2xl font-bold bg-slate-800 border-slate-600 text-white mb-1"
+              />
+            ) : (
+              <h1 className="text-2xl md:text-3xl font-bold text-white">{shop.shop_name}</h1>
+            )}
+            {isEditing ? (
+              <Input
+                value={editData.owner_name}
+                onChange={e => setEditData(d => ({ ...d, owner_name: e.target.value }))}
+                className="bg-slate-800 border-slate-600 text-slate-300 text-sm"
+                placeholder="Owner name"
+              />
+            ) : (
+              <p className="text-slate-400">{shop.owner_name}</p>
+            )}
           </div>
+          {isEditing ? (
+            <div className="flex gap-2">
+              <Button size="sm" onClick={handleSave} className="bg-emerald-600 hover:bg-emerald-700 gap-1">
+                <Save className="w-4 h-4" /> Save
+              </Button>
+              <Button size="sm" variant="ghost" onClick={() => setIsEditing(false)} className="text-slate-400">
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
+          ) : (
+            <Button size="sm" variant="outline" onClick={handleEditStart} className="border-slate-600 text-slate-300 hover:bg-slate-700 gap-1">
+              <Edit className="w-4 h-4" /> Edit
+            </Button>
+          )}
         </div>
       </div>
 
