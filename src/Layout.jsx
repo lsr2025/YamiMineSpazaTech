@@ -172,6 +172,11 @@ export default function Layout({ children, currentPageName }) {
       {/* Main Content */}
           <main className="lg:ml-80 pt-24 p-4 md:p-6 pb-24 lg:pb-6 min-h-screen">
             {children}
+            <footer className="mt-12 pt-6 border-t border-slate-200 text-center text-xs text-slate-400 space-y-1 pb-4">
+              <p>© 2026 Kwahlelwa Group (Pty) Ltd. All Rights Reserved.</p>
+              <p>Patent Pending. Unauthorized reproduction or use prohibited.</p>
+              <p>Spaza Tech™ is a trademark of Kwahlelwa Group.</p>
+            </footer>
           </main>
 
           {/* Mobile Bottom Navigation */}
