@@ -799,7 +799,16 @@ export default function ShopDetail() {
             <CardTitle className="text-white">Notes</CardTitle>
           </CardHeader>
           <CardContent className="p-4">
-            <p className="text-slate-300 whitespace-pre-wrap">{shop.notes}</p>
+            {isEditing ? (
+              <textarea
+                value={editData.notes}
+                onChange={e => setEditData(d => ({ ...d, notes: e.target.value }))}
+                className="w-full bg-slate-800 border border-slate-600 text-white rounded-md p-2 text-sm resize-none h-28"
+                placeholder="Add notes..."
+              />
+            ) : (
+              <p className="text-slate-300 whitespace-pre-wrap">{shop.notes}</p>
+            )}
           </CardContent>
         </Card>
       )}
