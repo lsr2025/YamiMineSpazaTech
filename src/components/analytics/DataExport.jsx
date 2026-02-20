@@ -230,57 +230,50 @@ ${shops_.map(s=>`    <Shop>
     : exportType === 'nef' ? filteredShops().filter(s => s.funding_status === 'eligible').length
     : filteredShops().length;
 
+  const municipalities = [...new Set(shops.map(s => s.municipality).filter(Boolean))];
+
   return (
     <Card className="bg-gradient-to-br from-slate-900 to-slate-800 border-slate-700/50">
       <CardHeader className="border-b border-slate-700/50">
         <CardTitle className="text-white flex items-center gap-2">
           <Download className="w-5 h-5 text-emerald-400" />
-          Data Export for Funding Bodies
+          Data Export
         </CardTitle>
       </CardHeader>
       <CardContent className="p-4 space-y-6">
-        {/* Export Format Selection */}
+
+        {/* What to export */}
         <div>
-          <Label className="text-slate-400 text-sm mb-3 block">Select Export Format</Label>
-          <div className="grid md:grid-cols-2 gap-3">
-            <ExportFormatCard
-              format="CSV"
-              icon={FileSpreadsheet}
-              description="Standard spreadsheet format"
-              selected={exportFormat === 'csv'}
-              onClick={() => setExportFormat('csv')}
-            />
-            <ExportFormatCard
-              format="XML"
-              icon={FileCode}
-              description="Structured data format"
-              selected={exportFormat === 'xml'}
-              onClick={() => setExportFormat('xml')}
-            />
-            <ExportFormatCard
-              format="NEF Report"
-              icon={Building}
-              description="National Empowerment Fund format"
-              selected={exportFormat === 'nef'}
-              onClick={() => setExportFormat('nef')}
-              badge="NEF"
-            />
-            <ExportFormatCard
-              format="DSBD Report"
-              icon={FileText}
-              description="Dept. of Small Business format"
-              selected={exportFormat === 'dsbd'}
-              onClick={() => setExportFormat('dsbd')}
-              badge="DSBD"
-            />
+          <Label className="text-slate-400 text-sm mb-3 block">What to Export</Label>
+          <div className="grid md:grid-cols-3 gap-3">
+            <ExportFormatCard format="Shops" icon={FileSpreadsheet} description="All shop profiles & compliance data"
+              selected={exportType === 'shops'} onClick={() => setExportType('shops')} />
+            <ExportFormatCard format="Inspections" icon={ClipboardList} description="All inspection records & scores"
+              selected={exportType === 'inspections'} onClick={() => setExportType('inspections')} />
+            <ExportFormatCard format="NEF Eligible" icon={Building} description="Funding-ready shops only"
+              selected={exportType === 'nef'} onClick={() => setExportType('nef')} badge="NEF" />
+          </div>
+        </div>
+
+        {/* File format */}
+        <div>
+          <Label className="text-slate-400 text-sm mb-3 block">File Format</Label>
+          <div className="grid md:grid-cols-3 gap-3">
+            <ExportFormatCard format="CSV" icon={FileSpreadsheet} description="Excel, Google Sheets compatible"
+              selected={exportFormat === 'csv'} onClick={() => setExportFormat('csv')} />
+            <ExportFormatCard format="Excel (.xls)" icon={FileCode} description="Native Excel workbook"
+              selected={exportFormat === 'xlsx'} onClick={() => setExportFormat('xlsx')} badge="New" />
+            <ExportFormatCard format="XML" icon={FileText} description="Structured data / API exchange"
+              selected={exportFormat === 'xml'} onClick={() => setExportFormat('xml')}
+              disabled={exportType === 'inspections' || exportType === 'nef'} />
           </div>
         </div>
 
         {/* Filters */}
-        <div className="p-4 bg-slate-800/50 rounded-xl">
-          <div className="flex items-center gap-2 mb-4">
+        <div className="p-4 bg-slate-800/50 rounded-xl space-y-4">
+          <div className="flex items-center gap-2">
             <Filter className="w-4 h-4 text-slate-400" />
-            <Label className="text-white font-medium">Filter Data</Label>
+            <Label className="text-white font-medium">Filters</Label>
           </div>
           <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-2">
@@ -291,7 +284,7 @@ ${shops_.map(s=>`    <Shop>
                 </SelectTrigger>
                 <SelectContent className="bg-slate-800 border-slate-700">
                   <SelectItem value="all">All Status</SelectItem>
-                  <SelectItem value="compliant">Compliant Only</SelectItem>
+                  <SelectItem value="compliant">Compliant</SelectItem>
                   <SelectItem value="partially_compliant">Partially Compliant</SelectItem>
                   <SelectItem value="non_compliant">Non-Compliant</SelectItem>
                   <SelectItem value="pending">Pending</SelectItem>
@@ -313,60 +306,30 @@ ${shops_.map(s=>`    <Shop>
               </Select>
             </div>
           </div>
-
-          {/* Options */}
-          <div className="mt-4 pt-4 border-t border-slate-700/50 space-y-3">
-            <div className="flex items-center gap-3">
-              <Checkbox
-                id="includePII"
-                checked={includePII}
-                onCheckedChange={setIncludePII}
-              />
-              <Label htmlFor="includePII" className="text-slate-300 cursor-pointer">
-                Include personal information (phone, ID)
+          {exportType !== 'inspections' && (
+            <div className="pt-2 border-t border-slate-700/50 flex items-center gap-3">
+              <Checkbox id="includePII" checked={includePII} onCheckedChange={setIncludePII} />
+              <Label htmlFor="includePII" className="text-slate-300 cursor-pointer text-sm">
+                Include personal information (phone, ID, email)
               </Label>
             </div>
-          </div>
+          )}
         </div>
 
-        {/* Export Summary */}
-        <div className="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-white font-medium">Ready to Export</p>
-              <p className="text-slate-400 text-sm">
-                {filteredCount} records match your filters
-              </p>
-            </div>
-            <Button
-              onClick={handleExport}
-              disabled={exporting || filteredCount === 0}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2"
-            >
-              {exporting ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Exporting...
-                </>
-              ) : (
-                <>
-                  <Download className="w-4 h-4" />
-                  Export {exportFormat.toUpperCase()}
-                </>
-              )}
-            </Button>
+        {/* CTA */}
+        <div className="p-4 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-center justify-between gap-4">
+          <div>
+            <p className="text-white font-medium">Ready to Export</p>
+            <p className="text-slate-400 text-sm">{currentCount} records · {exportFormat === 'xlsx' ? 'Excel (.xls)' : exportFormat.toUpperCase()}</p>
           </div>
+          <Button onClick={handleExport} disabled={exporting || currentCount === 0}
+            className="bg-emerald-600 hover:bg-emerald-700 text-white gap-2 shrink-0">
+            {exporting
+              ? <><Loader2 className="w-4 h-4 animate-spin" />Exporting...</>
+              : <><Download className="w-4 h-4" />Download</>}
+          </Button>
         </div>
 
-        {/* Funding Body Info */}
-        <div className="text-xs text-slate-500">
-          <p className="mb-2 font-medium text-slate-400">Supported Funding Bodies:</p>
-          <ul className="space-y-1 list-disc list-inside">
-            <li>National Empowerment Fund (NEF) - Township Entrepreneurship Fund</li>
-            <li>Department of Small Business Development (DSBD)</li>
-            <li>iLembe District Enterprise Development Agency</li>
-          </ul>
-        </div>
       </CardContent>
     </Card>
   );
