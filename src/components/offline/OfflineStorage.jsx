@@ -1,3 +1,12 @@
+/**
+ * Copyright © 2026 Kwahlelwa Group (Pty) Ltd.
+ * All Rights Reserved.
+ *
+ * This source code is confidential and proprietary.
+ * Unauthorized copying, distribution, or use is strictly prohibited.
+ *
+ * Patent Pending - ZA Provisional Application
+ */
 // Offline Storage Utility using IndexedDB
 const DB_NAME = 'SpazaOfflineDB';
 const DB_VERSION = 3; // bumped to add shop cache

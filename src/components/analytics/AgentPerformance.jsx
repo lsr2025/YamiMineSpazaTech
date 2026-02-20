@@ -1,3 +1,12 @@
+/**
+ * Copyright © 2026 Kwahlelwa Group (Pty) Ltd.
+ * All Rights Reserved.
+ *
+ * This source code is confidential and proprietary.
+ * Unauthorized copying, distribution, or use is strictly prohibited.
+ *
+ * Patent Pending - ZA Provisional Application
+ */
 import React, { useMemo, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
