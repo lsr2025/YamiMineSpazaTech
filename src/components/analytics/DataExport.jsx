@@ -80,7 +80,6 @@ export default function DataExport({ shops, inspections }) {
   const [exportType, setExportType] = useState('shops');
   const [statusFilter, setStatusFilter] = useState('all');
   const [municipalityFilter, setMunicipalityFilter] = useState('all');
-  const [includeInspections, setIncludeInspections] = useState(true);
   const [includePII, setIncludePII] = useState(false);
   const [exporting, setExporting] = useState(false);
 
