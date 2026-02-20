@@ -350,7 +350,7 @@ export default function Dashboard() {
       {/* Footer Branding */}
       <div className="mt-12 text-center">
         <p className="text-slate-500 text-sm">
-          Created by <span className="bg-gradient-to-r from-[#0ea5e9] to-[#3b82f6] bg-clip-text text-transparent font-semibold">Kwahlelwa Group</span>
+          Created by <a href="https://www.kwahlelwagroup.co.za" target="_blank" rel="noopener noreferrer" className="bg-gradient-to-r from-[#0ea5e9] to-[#3b82f6] bg-clip-text text-transparent font-semibold hover:underline">Kwahlelwa Group</a>
         </p>
       </div>
     </div>
