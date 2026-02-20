@@ -203,6 +203,11 @@ export default function ShopDetail() {
   const shopId = urlParams.get('id');
   const { isOnline } = useOfflineStatus();
 
+  const [isEditing, setIsEditing] = useState(false);
+  const [editData, setEditData] = useState({});
+  const [pendingEdit, setPendingEdit] = useState(false);
+  const [saveMsg, setSaveMsg] = useState('');
+
   const { data: shop, isLoading } = useQuery({
     queryKey: ['shop', shopId],
     queryFn: async () => {
@@ -217,6 +222,56 @@ export default function ShopDetail() {
     },
     enabled: !!shopId
   });
+
+  // Check for pending offline edit on load
+  useEffect(() => {
+    if (!shopId) return;
+    offlineStorage.getPendingShopEdits().then(edits => {
+      const mine = edits.find(e => e.shop_id === shopId);
+      if (mine) setPendingEdit(true);
+    });
+  }, [shopId]);
+
+  // When coming back online, auto-sync is handled by SyncManager
+  // But also refresh the shop data
+  useEffect(() => {
+    if (isOnline && shopId) {
+      queryClient.invalidateQueries({ queryKey: ['shop', shopId] });
+    }
+  }, [isOnline, shopId]);
+
+  const handleEditStart = () => {
+    setEditData({
+      shop_name: shop.shop_name || '',
+      owner_name: shop.owner_name || '',
+      phone_number: shop.phone_number || '',
+      physical_address: shop.physical_address || '',
+      ward: shop.ward || '',
+      notes: shop.notes || '',
+    });
+    setIsEditing(true);
+    setSaveMsg('');
+  };
+
+  const handleSave = async () => {
+    if (isOnline) {
+      // Save directly
+      await base44.entities.Shop.update(shopId, editData);
+      await offlineStorage.updateCachedShop({ ...shop, ...editData });
+      queryClient.invalidateQueries({ queryKey: ['shop', shopId] });
+      setSaveMsg('Saved successfully!');
+    } else {
+      // Save to offline queue
+      await offlineStorage.saveShopEdit(shopId, editData);
+      await offlineStorage.updateCachedShop({ ...shop, ...editData });
+      queryClient.invalidateQueries({ queryKey: ['shop', shopId] });
+      setPendingEdit(true);
+      await refreshPendingCount();
+      setSaveMsg('Saved offline. Will sync when online.');
+    }
+    setIsEditing(false);
+    setTimeout(() => setSaveMsg(''), 3500);
+  };
 
   const { data: inspections = [] } = useQuery({
     queryKey: ['inspections', shopId],
