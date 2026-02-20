@@ -511,7 +511,9 @@ export default function ShopDetail() {
               </CardHeader>
               <CardContent className="p-4">
                 <InfoRow icon={Building} label="Municipality" value={shop.municipality} />
-                <InfoRow icon={MapPin} label="Ward" value={shop.ward ? `Ward ${shop.ward}` : null} />
+                <InfoRow icon={MapPin} label="Ward" value={isEditing ? (
+                  <Input value={editData.ward} onChange={e => setEditData(d => ({ ...d, ward: e.target.value }))} className="bg-slate-800 border-slate-600 text-white h-7 text-sm" placeholder="Ward number" />
+                ) : (shop.ward ? `Ward ${shop.ward}` : null)} />
                 <InfoRow 
                   icon={Navigation} 
                   label="GPS Coordinates" 
