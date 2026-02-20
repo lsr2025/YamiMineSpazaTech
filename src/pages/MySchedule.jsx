@@ -1,3 +1,12 @@
+/**
+ * Copyright © 2026 Kwahlelwa Group (Pty) Ltd.
+ * All Rights Reserved.
+ *
+ * This source code is confidential and proprietary.
+ * Unauthorized copying, distribution, or use is strictly prohibited.
+ *
+ * Patent Pending - ZA Provisional Application
+ */
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { base44 } from '@/api/base44Client';
