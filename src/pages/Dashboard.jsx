@@ -252,7 +252,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <div className="mb-8">
+      <div className="mb-5 md:mb-8">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
