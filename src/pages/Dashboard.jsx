@@ -259,11 +259,11 @@ export default function Dashboard() {
           className="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
         >
           <div>
-            <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#0ea5e9] to-[#3b82f6] bg-clip-text text-transparent">
+            <h1 className="text-2xl md:text-4xl font-bold bg-gradient-to-r from-[#0ea5e9] to-[#3b82f6] bg-clip-text text-transparent">
               Command Centre
             </h1>
-            <p className="text-slate-600 mt-1">
-              Spaza Compliance & Funding Readiness Dashboard
+            <p className="text-slate-600 mt-0.5 text-sm md:text-base">
+              Spaza Compliance & Funding Readiness
             </p>
           </div>
           <div className="flex items-center gap-3">
