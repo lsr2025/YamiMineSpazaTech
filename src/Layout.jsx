@@ -123,7 +123,7 @@ export default function Layout({ children, currentPageName }) {
         transform transition-transform duration-300 ease-in-out
         lg:translate-x-0
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-        hidden lg:block
+        ${sidebarOpen ? 'block' : 'hidden lg:block'}
       `}>
         <div className="p-6 h-full flex flex-col">
           <nav className="flex-1 space-y-2">
