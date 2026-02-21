@@ -126,10 +126,7 @@ const AgentCard = ({ agent, attendance }) => {
 export default function HRDashboard() {
   const [searchQuery, setSearchQuery] = useState('');
 
-  const { data: agents = [] } = useQuery({
-    queryKey: ['field-agents'],
-    queryFn: () => base44.entities.FieldAgent.list('-created_date', 100)
-  });
+  const { data: agents = [] } = useOfflineAgents();
 
   const { data: attendance = [] } = useQuery({
     queryKey: ['attendance'],
