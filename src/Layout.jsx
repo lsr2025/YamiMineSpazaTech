@@ -70,42 +70,42 @@ export default function Layout({ children, currentPageName }) {
       
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#e8ecf1] shadow-[8px_8px_16px_#c5c9ce,-8px_-8px_16px_#ffffff]">
-        <div className="my-1 px-4 py-3 flex items-center justify-between gap-2">
-          <div className="flex items-center gap-3 min-w-0">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setSidebarOpen(true)} className="text-slate-700 mx-2 my-2 text-sm font-medium rounded-md inline-flex items-center justify-center gap-2 whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:text-accent-foreground h-9 w-9 lg:hidden hover:bg-transparent flex-shrink-0">
+        
 
 
-              <Menu className="w-6 h-6" />
-            </Button>
-            <img
-              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/697cbf49c56a50b05e7118cf/c37070ab4_yamiMinelogo.jpg"
-              alt="Yami Mine Solutions"
-              className="h-10 object-contain flex-shrink-0" />
 
-          </div>
-          <div className="flex items-center gap-2 flex-shrink-0">
-            {user &&
-            <div className="hidden md:flex items-center gap-3 px-4 py-2 rounded-full bg-[#e8ecf1] shadow-[inset_4px_4px_8px_#c5c9ce,inset_-4px_-4px_8px_#ffffff]">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#0ea5e9] to-[#3b82f6] flex items-center justify-center shadow-[4px_4px_8px_#c5c9ce,-2px_-2px_6px_#ffffff]">
-                  <span className="text-white text-sm font-semibold">
-                    {user.full_name?.[0] || user.email?.[0] || 'U'}
-                  </span>
-                </div>
-                <span className="text-slate-700 font-medium">{user.full_name || user.email}</span>
-              </div>
-            }
-            <Link to={createPageUrl('NewShop')}>
-              <Button className="rounded-full px-3 md:px-6 py-2 bg-gradient-to-r from-[#0ea5e9] to-[#3b82f6] text-white shadow-[6px_6px_12px_#c5c9ce,-3px_-3px_8px_#ffffff] hover:shadow-[4px_4px_8px_#c5c9ce,-2px_-2px_6px_#ffffff] border-0 gap-1 md:gap-2 text-sm">
-                <Plus className="w-4 h-4" />
-                <span className="hidden sm:inline">Profile Shop</span>
-                <span className="sm:hidden">Add</span>
-              </Button>
-            </Link>
-          </div>
-        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       </header>
 
       {/* Mobile Sidebar Overlay */}
@@ -181,7 +181,7 @@ export default function Layout({ children, currentPageName }) {
       </aside>
 
       {/* Main Content */}
-          <main className="lg:ml-80 pt-20 p-3 md:p-6 pb-28 lg:pb-6 min-h-screen">
+          <main className="px-3 py-3 lg:ml-80 md:p-6 lg:pb-6 min-h-screen">
             {children}
             <footer className="text-slate-400 mt-12 pt-5 pb-4 text-xs text-center rounded border-t border-slate-200 space-y-1">
               <p>© 2026 Kwahlelwa Group (Pty) Ltd. All Rights Reserved.</p>
