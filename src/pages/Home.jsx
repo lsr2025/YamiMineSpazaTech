@@ -142,8 +142,7 @@ export default function Home() {
   }, [user, isLoading, navigate]);
 
   const handleSelectUser = (email) => {
-    // Redirect to login
-    base44.auth.redirectToLogin();
+    base44.auth.redirectToLogin(createPageUrl('SuperDashboard'));
   };
 
   if (isLoading) {
