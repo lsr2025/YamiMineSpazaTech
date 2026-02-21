@@ -192,13 +192,13 @@ export default function Layout({ children, currentPageName }) {
 
           {/* Mobile Bottom Navigation */}
           <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#e8ecf1] border-t border-slate-200 shadow-[0_-4px_16px_#c5c9ce]">
-            <div className="flex items-center justify-around py-1 px-2 safe-area-pb">
+            <div className="flex items-center justify-around py-2 px-1" style={{paddingBottom: 'max(8px, env(safe-area-inset-bottom))'}}>
               {mobileNavItems.map((item) => {
                 const isActive = currentPageName === item.page;
                 const Icon = item.icon;
                 return (
                   <Link key={item.page} to={createPageUrl(item.page)} className="flex-1">
-                    <div className={`flex flex-col items-center gap-0.5 py-2 px-1 rounded-xl transition-all
+                    <div className={`flex flex-col items-center gap-0.5 py-1.5 px-1 rounded-xl transition-all
                       ${item.highlight
                         ? isActive
                           ? 'bg-gradient-to-r from-[#0ea5e9] to-[#3b82f6] text-white shadow-[4px_4px_8px_#c5c9ce,-2px_-2px_6px_#ffffff]'
@@ -207,8 +207,8 @@ export default function Layout({ children, currentPageName }) {
                           ? 'text-[#0ea5e9]'
                           : 'text-slate-500'
                       }`}>
-                      <Icon className={`${item.highlight ? 'w-5 h-5' : 'w-5 h-5'}`} />
-                      <span className="text-[10px] font-medium leading-tight">{item.name}</span>
+                      <Icon className="w-5 h-5" />
+                      <span className="text-[9px] font-medium leading-tight">{item.name}</span>
                     </div>
                   </Link>
                 );
