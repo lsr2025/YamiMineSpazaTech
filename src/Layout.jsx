@@ -126,9 +126,16 @@ export default function Layout({ children, currentPageName }) {
         lg:translate-x-0
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
-        <div className="p-6 h-full flex flex-col">
+        <div className="p-6 h-full flex flex-col pt-16 lg:pt-6">
+          {/* Close button for mobile */}
+          <div className="lg:hidden flex items-center justify-between mb-6">
+            <span className="text-slate-700 font-bold text-lg">Menu</span>
+            <Button variant="ghost" size="icon" onClick={() => setSidebarOpen(false)} className="text-slate-500 hover:bg-transparent">
+              <span className="text-xl">✕</span>
+            </Button>
+          </div>
           {/* Navigation */}
-          <nav className="flex-1 space-y-2">
+          <nav className="flex-1 space-y-2 overflow-y-auto">
             {navItems.filter(item => !item.adminOnly || user?.role === 'admin').map((item) => {
                   const isActive = currentPageName === item.page;
                   const Icon = item.icon;
