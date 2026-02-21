@@ -207,25 +207,70 @@ class OfflineStorage {
     });
   }
 
+  // ── Agent cache ───────────────────────────────────────────────────────────
+  async cacheAgents(agents) {
+    if (!this.db) await this.init();
+    return new Promise((resolve, reject) => {
+      const tx = this.db.transaction([STORES.AGENT_CACHE], 'readwrite');
+      const store = tx.objectStore(STORES.AGENT_CACHE);
+      agents.forEach(a => store.put({ ...a, _cached_at: new Date().toISOString() }));
+      tx.oncomplete = () => resolve();
+      tx.onerror = () => reject(tx.error);
+    });
+  }
+
+  async getCachedAgents() {
+    return this._tx(STORES.AGENT_CACHE, 'readonly', s => s.getAll());
+  }
+
+  // ── Checkout queue (offline check-out for existing attendance record) ──────
+  async saveCheckout(attendanceId, data) {
+    if (!this.db) await this.init();
+    return new Promise((resolve, reject) => {
+      const tx = this.db.transaction([STORES.CHECKOUT_QUEUE], 'readwrite');
+      const store = tx.objectStore(STORES.CHECKOUT_QUEUE);
+      const req = store.put({ attendance_id: attendanceId, data, timestamp: new Date().toISOString(), synced: false });
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  }
+
+  async getPendingCheckouts() {
+    const all = await this._tx(STORES.CHECKOUT_QUEUE, 'readonly', s => s.getAll());
+    return all.filter(x => !x.synced);
+  }
+
+  async deletePendingCheckout(attendanceId) {
+    return this._tx(STORES.CHECKOUT_QUEUE, 'readwrite', s => s.delete(attendanceId));
+  }
+
   // ── Count all pending items ───────────────────────────────────────────────
   async getAllPendingCount() {
-    const [shops, shopEdits, inspections, attendance] = await Promise.all([
+    const [shops, shopEdits, inspections, attendance, checkouts] = await Promise.all([
       this.getPendingShops(),
       this.getPendingShopEdits(),
       this.getPendingInspections(),
       this.getPendingAttendance(),
+      this.getPendingCheckouts(),
     ]);
-    return shops.length + shopEdits.length + inspections.length + attendance.length;
+    return shops.length + shopEdits.length + inspections.length + attendance.length + checkouts.length;
   }
 
   async getPendingBreakdown() {
-    const [shops, shopEdits, inspections, attendance] = await Promise.all([
+    const [shops, shopEdits, inspections, attendance, checkouts] = await Promise.all([
       this.getPendingShops(),
       this.getPendingShopEdits(),
       this.getPendingInspections(),
       this.getPendingAttendance(),
+      this.getPendingCheckouts(),
     ]);
-    return { shops: shops.length, shopEdits: shopEdits.length, inspections: inspections.length, attendance: attendance.length };
+    return {
+      shops: shops.length,
+      shopEdits: shopEdits.length,
+      inspections: inspections.length,
+      attendance: attendance.length,
+      checkouts: checkouts.length,
+    };
   }
 }
 
