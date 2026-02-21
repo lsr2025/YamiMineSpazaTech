@@ -150,6 +150,7 @@ export default function HRDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4 md:p-6 pb-24 lg:pb-6">
+      <OfflineStatusBar className="mb-4" />
       {/* Header */}
       <div className="mb-8">
         <motion.div
