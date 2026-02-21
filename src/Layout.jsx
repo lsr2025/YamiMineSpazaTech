@@ -70,7 +70,7 @@ export default function Layout({ children, currentPageName }) {
       
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-[#e8ecf1] shadow-[8px_8px_16px_#c5c9ce,-8px_-8px_16px_#ffffff]">
-        <div className="px-4 py-3 opacity-100 md:px-6 flex items-center justify-between gap-3">
+        <div className="px-4 py-3 md:px-6 flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <Button
               variant="ghost"
