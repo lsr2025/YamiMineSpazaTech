@@ -216,7 +216,7 @@ export default function Layout({ children, currentPageName }) {
       </aside>
 
       {/* Main Content */}
-          <main className="px-3 py-3 lg:ml-80 md:p-6 lg:pb-6 min-h-screen">
+          <main className="lg:ml-80 pt-20 p-3 md:p-6 pb-28 lg:pb-6 min-h-screen">
             {children}
             <footer className="text-slate-400 mt-12 pt-5 pb-4 text-xs text-center rounded border-t border-slate-200 space-y-1">
               <p>© 2026 Kwahlelwa Group (Pty) Ltd. All Rights Reserved.</p>
